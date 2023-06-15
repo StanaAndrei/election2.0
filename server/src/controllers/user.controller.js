@@ -15,11 +15,19 @@ const registerUser = async (req, res) => {
     }
 }
 
-const getUser = (req, res) => {
-
+const getUser = async (req, res) => {
+    try {
+        const user = await UserModel.findByPk(req.params.id);
+        res.status(StatusCodes.OK).send({
+            userData: user.dataValues
+        })
+    } catch (e) {
+        console.error(e);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
+    }
 }
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
     
 }
 
