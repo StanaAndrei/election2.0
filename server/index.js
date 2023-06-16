@@ -16,3 +16,5 @@ app.get('/', (req, res) => res.send('HI!'));
 app.listen(port, () => {
     console.log(`Listening on port:${port}!`);
 })
+
+//sendEmail('stadey33@gmail.com', 'This is the subject!', 'tralalallalalala')
