@@ -1,28 +1,22 @@
+const user = require('../models/user');
+const UserService = require('../services/user.service');
 const db = require('./../models');
 const { StatusCodes } = require('http-status-codes');
 
-const { UserModel } = db;
-
 const registerUser = async (req, res) => {
-    console.log(req.body);
-    try {
-        const user = await UserModel.create(req.body);
+    const user = await UserService.registerUser(req.body);
+    if (user) {
         res.status(StatusCodes.CREATED).send(user);
-
-    } catch (e) {
-        console.error(e);
+    } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
     }
 }
 
 const getUser = async (req, res) => {
-    try {
-        const user = await UserModel.findByPk(req.params.id);
-        res.status(StatusCodes.OK).send({
-            userData: user.dataValues
-        })
-    } catch (e) {
-        console.error(e);
+    const userData = await UserService.getUser(req.params.id);
+    if (userData) {
+        res.status(StatusCodes.OK).send(userData);
+    } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
     }
 }
