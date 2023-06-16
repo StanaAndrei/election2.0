@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require('bcrypt');
+const { GLOBAL_SALT } = require('../settings/salt.setup');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -39,5 +42,12 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
   });
+  
+  User.beforeCreate((user, options) => {
+    const hashedPassword = bcrypt.hashSync(user.password, GLOBAL_SALT);
+    user.password = hashedPassword;
+  })
+
   return User;
 };
+

@@ -3,6 +3,7 @@ const { UserModel } = require("../models");
 const registerUser = async userRegData => {
     try {
         const user = await UserModel.create(userRegData);
+        user.password = '';
         return user;
     } catch (err) {
         console.error(err);
@@ -13,9 +14,6 @@ const registerUser = async userRegData => {
 const getUser = async userId => {
     try {
         const user = await UserModel.findByPk(userId);
-        console.log('====================================');
-        console.log(user);
-        console.log('====================================');
         return user.dataValues;
     } catch (e) {
         console.error(e);
