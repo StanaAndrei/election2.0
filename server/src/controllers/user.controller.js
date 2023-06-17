@@ -2,14 +2,14 @@ const user = require('../models/user');
 const UserService = require('../services/user.service');
 const db = require('./../models');
 const { StatusCodes } = require('http-status-codes');
-const sendEmail = require('./../settings/mailer.setup')
+//const sendEmail = require('./../settings/mailer.setup')
 
 
 const registerUser = async (req, res) => {
     const user = await UserService.registerUser(req.body);
     if (user) {
         res.status(StatusCodes.CREATED).send(user);
-        sendEmail(user.email, 'Verify account!', 'TODO: verify account!');
+        //sendEmail(user.email, 'Verify account!', 'TODO: verify account!');
     } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
     }
@@ -28,10 +28,20 @@ const deleteUser = async (req, res) => {
     
 }
 
+const getAllUsers = async (req, res) => {
+    const users = await UserService.getAllUsers();
+    if (users) {
+        res.status(StatusCodes.OK).send(users);
+    } else {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send()
+    }
+}
+
 const UserController = {
     registerUser,
     getUser,
-    deleteUser
+    deleteUser,
+    getAllUsers
 };
 
 module.exports = UserController;

@@ -21,9 +21,31 @@ const getUser = async userId => {
     }
 }
 
+const deleteUser = async userId => {
+    try {
+        const user = await UserModel.findByPk(userId);
+        await user.destroy();
+        return true;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
+
+const getAllUsers = async () => {
+    try {
+        const users = await UserModel.findAll();
+        return users;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
 const UserService = {
     registerUser,
-    getUser
+    getUser,
+    getAllUsers
 }
 
 module.exports = UserService;
