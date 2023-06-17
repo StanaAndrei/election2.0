@@ -45,7 +45,8 @@ const getAllUsers = async () => {
 const UserService = {
     registerUser,
     getUser,
-    getAllUsers
+    getAllUsers,
+    deleteUser,
 }
 
 module.exports = UserService;

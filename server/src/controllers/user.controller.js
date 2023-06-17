@@ -25,7 +25,10 @@ const getUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    
+    const deleted = await UserService.deleteUser(req.params.id);
+    res.status(StatusCodes.OK).send({
+        deleted
+    })
 }
 
 const getAllUsers = async (req, res) => {

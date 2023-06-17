@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'private.key';
+const SECRETS = require('../../secrets');
+const JWT_SECRET = SECRETS.JWT_SECRET;
 const USED_SIGN_ALGO = 'HS256';
 
 module.exports = {

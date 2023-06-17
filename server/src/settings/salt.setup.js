@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
-const SECRET_SALT_ROUNDS = process.env.SECRET_SALT_ROUNDS || 10;
+const SECRETS = require('../../secrets');
+const SECRET_SALT_ROUNDS =  SECRETS.SECRET_SALT_ROUNDS;
 
 const GLOBAL_SALT = bcrypt.genSaltSync(SECRET_SALT_ROUNDS);
 

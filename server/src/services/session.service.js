@@ -9,6 +9,9 @@ const createSession = async loginData => {
             email: loginData.email
         }
     });
+    if (!user) {
+        return null;
+    }
     const { password } = user.dataValues;
     console.log(user.toJSON());
     const ok = bcrypt.compareSync(loginData.password, password);
