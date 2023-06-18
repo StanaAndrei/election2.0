@@ -2,8 +2,7 @@ const user = require('../models/user');
 const UserService = require('../services/user.service');
 const db = require('./../models');
 const { StatusCodes } = require('http-status-codes');
-//const sendEmail = require('./../settings/mailer.setup')
-
+//const { sendEmailHTML } = require('./../settings/mailer.setup')
 
 const registerUser = async (req, res) => {
     const user = await UserService.registerUser(req.body);
@@ -40,11 +39,23 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getResetPassword = async (req, res) => {
+    const email = req.params.email;
+    const SUBJECT = 'Password reset!';
+    const TEXT = '';
+}
+
+const resetPassword = async (req, res) => {
+
+}
+
 const UserController = {
     registerUser,
     getUser,
     deleteUser,
-    getAllUsers
+    getAllUsers,
+    getResetPassword,
+    resetPassword
 };
 
 module.exports = UserController;

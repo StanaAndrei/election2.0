@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport( {
 transporter.verify().then(console.log).catch(console.error);
 console.log('mailer setup');
 
-module.exports = function sendEmail(to, subject, text) {
+function sendEmail(to, subject, text) {
     transporter.sendMail({
         from: 'testmailer691337@gmail.com',
         to: to,
@@ -26,4 +26,24 @@ module.exports = function sendEmail(to, subject, text) {
             console.log('Email sent: ' + info.response);
         }
     })
+}
+
+function sendEmailHTML(to, subject, html) {
+    transporter.sendMail({
+        from: 'testmailer691337@gmail.com',
+        to: to,
+        subject: subject,
+        html: html
+    }, (err, info) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    })
+}
+
+module.exports = {
+    sendEmail,
+    sendEmailHTML
 }
