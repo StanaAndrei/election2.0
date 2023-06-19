@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 
 const userRouter = require('./src/routes/user.router');
 const sessionRouter = require('./src/routes/session.router');
-
 const app = express();
+
+app.use(helmet());
 app.use(express.json());
 app.use(bodyParser.json());
 
