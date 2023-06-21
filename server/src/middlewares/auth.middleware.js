@@ -11,7 +11,8 @@ const isAuth = (req, res, next) => {
         }
         const decodedJwt = jwt.verify(token, SECRETS.JWT_SECRET);
         const { userId } = decodedJwt;
-        if (userId == req.id) {
+        if (userId == req.params.id) {
+            res.locals.userId = userId;
             next();
         } else {
             return res.status(StatusCodes.FORBIDDEN).send()

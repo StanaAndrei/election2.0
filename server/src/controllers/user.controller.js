@@ -2,6 +2,7 @@ const user = require('../models/user');
 const UserService = require('../services/user.service');
 const db = require('./../models');
 const { StatusCodes } = require('http-status-codes');
+const UserUpDto = require('./../dtos/user-up.dto');
 //const { sendEmailHTML } = require('./../settings/mailer.setup')
 
 const registerUser = async (req, res) => {
@@ -49,13 +50,35 @@ const resetPassword = async (req, res) => {
 
 }
 
+const updateUser = async (req, res) => {
+    const { body: newData } = req;
+    let parsedUserDto = undefined;
+    try {
+        parsedUserDto = await UserUpDto.validate(newData, {
+            strict: true
+        });
+    } catch(err) {
+        console.error(err);
+        res.status(StatusCodes.BAD_REQUEST).send('INVALID_DTO');
+        return;
+    }
+    console.log(parsedUserDto);
+    const ok = await UserService.updateUser(newData, res.locals.userId);
+    if (!ok || !parsedUserDto) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(false);
+    } else {
+        res.status(StatusCodes.ACCEPTED).send(true);
+    }//*/
+}
+
 const UserController = {
     registerUser,
     getUser,
     deleteUser,
     getAllUsers,
     getResetPassword,
-    resetPassword
+    resetPassword,
+    updateUser
 };
 
 module.exports = UserController;

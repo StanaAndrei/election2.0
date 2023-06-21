@@ -42,11 +42,23 @@ const getAllUsers = async () => {
     }
 }
 
+const updateUser = async (newData, userId) => {
+    try {
+        const user = await UserModel.findByPk(userId);
+        await user.update(newData);
+        return true;
+    } catch(err) {
+        console.error(err);
+        return false;
+    }
+}
+
 const UserService = {
     registerUser,
     getUser,
     getAllUsers,
     deleteUser,
+    updateUser
 }
 
 module.exports = UserService;
