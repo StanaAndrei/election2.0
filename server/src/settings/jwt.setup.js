@@ -5,5 +5,6 @@ const USED_SIGN_ALGO = 'HS256';
 
 module.exports = {
     JWT_SECRET,
-    USED_SIGN_ALGO
+    USED_SIGN_ALGO,
+    jwt
 }

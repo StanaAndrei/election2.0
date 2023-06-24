@@ -3,16 +3,35 @@ const UserService = require('../services/user.service');
 const db = require('./../models');
 const { StatusCodes } = require('http-status-codes');
 const UserUpDto = require('./../dtos/user-up.dto');
-//const { sendEmailHTML } = require('./../settings/mailer.setup')
+const { sendEmailFromTemp } = require('./../settings/mailer.setup')
+const { JWT_SECRET, USED_SIGN_ALGO, jwt } = require('./../settings/jwt.setup');
+const { THIS_URL_SECRET } = require('../../secrets');
 
 const registerUser = async (req, res) => {
     const user = await UserService.registerUser(req.body);
     if (user) {
         res.status(StatusCodes.CREATED).send(user);
-        //sendEmail(user.email, 'Verify account!', 'TODO: verify account!');
+        const token = jwt.sign({
+            userId: String(user.id),
+        }, JWT_SECRET, {
+            algorithm: USED_SIGN_ALGO
+        })
+        sendEmailFromTemp(user.email, 'Verify account!', 'activate', {
+            fullName: user.fullName,
+            activationUrlPref: 'CLIENT-URL',
+            token
+        });
     } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
     }
+}
+
+const activateUser = async (req, res) => {
+    const { userId } = jwt.verify(req.params.token, JWT_SECRET, {
+        algorithm: USED_SIGN_ALGO
+    });
+    console.log(userId);
+    res.status(StatusCodes.OK).send();
 }
 
 const getUser = async (req, res) => {
@@ -78,7 +97,8 @@ const UserController = {
     getAllUsers,
     getResetPassword,
     resetPassword,
-    updateUser
+    updateUser,
+    activateUser
 };
 
 module.exports = UserController;

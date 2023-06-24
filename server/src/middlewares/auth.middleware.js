@@ -23,6 +23,13 @@ const isAuth = (req, res, next) => {
     }
 }
 
+const isActivated = (req, res, next) => {
+    const ignorePaths = [''];
+    if (ignorePaths.includes(req.path)) {
+
+    }
+}
+
 const AuthMiddleware = {
     isAuth
 }

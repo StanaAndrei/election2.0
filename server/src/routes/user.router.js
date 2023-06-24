@@ -14,5 +14,6 @@ router.delete('/:id', AuthMiddleware.isAuth, UserController.deleteUser);
 
 router.get('/reset-password/:email', UserController.getResetPassword);
 router.patch('/reset-password/:token', UserController.resetPassword);
+router.patch('/activate/:token', UserController.activateUser)
 
 module.exports = router;

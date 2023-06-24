@@ -16,12 +16,12 @@ const transOptions = {
 const res = path.resolve(process.cwd() + '/src/views')
 const handleBarOptions = {
     viewEngine: {
-        extName: '.html',
+        extName: '.hbs',
         partialsDir: res,
         defaultLayout: false
     },
     viewPath: res,
-    extName: '.handlebars'
+    extName: '.hbs'
 }
 
 const transporter = nodemailer.createTransport(transOptions);
@@ -29,28 +29,22 @@ transporter.use('compile', hbs(handleBarOptions))
 
 transporter.verify().then(console.log).catch(console.error);
 
-const mailOptions = {
-
-}
-/*
-transporter.sendMail({
-    from: 'testmailer691337@gmail.com',
-    to: 'stadey343@gmail.com',
-    subject: 'test subject',
-    template: 'activate',
-    context: {
-        name: 'AndrewSt'
-    }
-}, (err, info) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log('Email sent: ' + info.response);
-    }
-})//*/
-
-function sendEmailFromTemp(temp, to, subject, context) {
-    
+function sendEmailFromTemp(to, subject, template, context) {
+    console.log(`${to}: ${subject}\n`, context);
+    /*
+    transporter.sendMail({
+        from: 'testmailer691337@gmail.com',
+        to,
+        subject,
+        template,
+        context
+    }, (err, info) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    })//*/
 }
 
 module.exports = {

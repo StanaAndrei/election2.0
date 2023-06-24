@@ -26,6 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
     },
+    fullName: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            return `${this.firstName} ${this.lastName}`
+        },
+        set() {
+            throw new Error('\'fullName\' is VIRTUAL!')
+        }
+    }
   }, {
     sequelize,
     modelName: 'User',
