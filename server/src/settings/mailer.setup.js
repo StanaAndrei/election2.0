@@ -1,6 +1,8 @@
 var nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path')
 
-const transporter = nodemailer.createTransport( {
+const transOptions = {
     service: 'gmail',
     host: "smtp.gmail.com",
     port: 465,
@@ -9,41 +11,48 @@ const transporter = nodemailer.createTransport( {
         user: 'testmailer691337@gmail.com',
         pass: 'upgzpqolcqsvgttq',
     },
-});
-transporter.verify().then(console.log).catch(console.error);
-console.log('mailer setup');
+};
 
-function sendEmail(to, subject, text) {
-    transporter.sendMail({
-        from: 'testmailer691337@gmail.com',
-        to: to,
-        subject: subject,
-        text: text
-    }, (err, info) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    })
+const res = path.resolve(process.cwd() + '/src/views')
+const handleBarOptions = {
+    viewEngine: {
+        extName: '.html',
+        partialsDir: res,
+        defaultLayout: false
+    },
+    viewPath: res,
+    extName: '.handlebars'
 }
 
-function sendEmailHTML(to, subject, html) {
-    transporter.sendMail({
-        from: 'testmailer691337@gmail.com',
-        to: to,
-        subject: subject,
-        html: html
-    }, (err, info) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    })
+const transporter = nodemailer.createTransport(transOptions);
+transporter.use('compile', hbs(handleBarOptions))
+
+transporter.verify().then(console.log).catch(console.error);
+
+const mailOptions = {
+
+}
+/*
+transporter.sendMail({
+    from: 'testmailer691337@gmail.com',
+    to: 'stadey343@gmail.com',
+    subject: 'test subject',
+    template: 'activate',
+    context: {
+        name: 'AndrewSt'
+    }
+}, (err, info) => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+})//*/
+
+function sendEmailFromTemp(temp, to, subject, context) {
+    
 }
 
 module.exports = {
-    sendEmail,
-    sendEmailHTML
+    sendEmailFromTemp,
 }

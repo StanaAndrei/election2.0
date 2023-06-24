@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const sendEmail = require('./src/settings/mailer.setup');
 
 const userRouter = require('./src/routes/user.router');
 const sessionRouter = require('./src/routes/session.router');
@@ -17,6 +18,7 @@ const port = process.env.PORT || 3000;
 app.get('/', (req, res) => res.send('HI!'));
 app.listen(port, () => {
     console.log(`Listening on port:${port}!`);
+
 })
 
 //sendEmail('stadey33@gmail.com', 'This is the subject!', 'tralalallalalala')
