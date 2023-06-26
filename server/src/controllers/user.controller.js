@@ -4,8 +4,6 @@ const UserUpDto = require('./../dtos/user-up.dto');
 const { sendEmailFromTemp } = require('./../settings/mailer.setup')
 const otpGenerator = require('otp-generator')
 const cacheInst = require('../settings/cache.setup');
-const { sequelize } = require('../models');
-const user = require('../models/user');
 
 const registerUser = async (req, res) => {
     const user = await UserService.registerUser(req.body);
@@ -15,11 +13,11 @@ const registerUser = async (req, res) => {
             upperCaseAlphabets: false, 
             specialChars: false 
         });
-        cacheInst.set(otpCode, user.id, { expires: 3600 })
         sendEmailFromTemp(user.email, 'Verify account!', 'activate', {
             fullName: user.fullName,
             otpCode
         });
+        cacheInst.set(otpCode, user.id, { expires: 3600 })
     } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
     }
@@ -63,11 +61,25 @@ const getAllUsers = async (req, res) => {
 const getResetPassword = async (req, res) => {
     const email = req.params.email;
     const SUBJECT = 'Password reset!';
-    const TEXT = '';
+    const otpCode = otpGenerator.generate(6, { 
+        upperCaseAlphabets: false, 
+        specialChars: false 
+    });
+    sendEmailFromTemp(email, SUBJECT, 'recovery', {
+        otpCode
+    })  
+    cacheInst.set(otpCode, email, { expires: 3600 })
+    res.status(StatusCodes.OK).send()
 }
 
 const resetPassword = async (req, res) => {
-
+    const email = cacheInst.take(req.body.otpCode);
+    const ok = await UserService.recPassword(email, req.body.password);
+    if (ok) {
+        res.status(StatusCodes.OK).send(ok);
+    } else {
+        res.status(StatusCodes.BAD_REQUEST).send(ok)
+    }
 }
 
 const updateUser = async (req, res) => {
@@ -79,10 +91,8 @@ const updateUser = async (req, res) => {
         });
     } catch(err) {
         console.error(err);
-        res.status(StatusCodes.BAD_REQUEST).send('INVALID_DTO');
-        return;
+        return res.status(StatusCodes.BAD_REQUEST).send('INVALID_DTO');
     }
-    console.log(parsedUserDto);
     const ok = await UserService.updateUser(newData, res.locals.userId);
     if (!ok || !parsedUserDto) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(false);

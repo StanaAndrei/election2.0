@@ -1,4 +1,6 @@
 const { UserModel } = require("../models");
+const bcrypt = require('bcrypt');
+const { GLOBAL_SALT } = require("../settings/salt.setup");
 
 const registerUser = async userRegData => {
     try {
@@ -66,13 +68,28 @@ const activateUser = async userId => {
     }
 }
 
+const recPassword = async (email, password) => {
+    try {
+        const user = await UserModel.findOne({
+            where: { email: email }
+        })
+        user.password = bcrypt.hashSync(password, GLOBAL_SALT);
+        await user.save();
+        return true;
+    } catch(err) {
+        console.error(err);
+        return false;
+    }
+}
+
 const UserService = {
     registerUser,
     getUser,
     getAllUsers,
     deleteUser,
     updateUser,
-    activateUser
+    activateUser,
+    recPassword
 }
 
 module.exports = UserService;
