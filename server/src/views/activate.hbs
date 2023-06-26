@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
 <body>
-    <h1 id="title">
-        Welcome {{fullName}}!
-    </h1>
-    <p>
-        Activate your account <a href="{{activationUrlPref}}/{{token}}">here</a>!
-    </p>
+  <div class="container">
+    <h1 style="color: aqua;">Welcome {{fullName}}!</h1>
+    <p>Use the code below to activate ur account:</p>
+    <input type="text" id="otpCode" value="{{otpCode}}" readonly>
+  </div>
 </body>
-<style>
-    #title {
-        color: aqua;
-    }
-</style>
 </html>

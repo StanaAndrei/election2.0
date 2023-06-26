@@ -1,25 +1,24 @@
-const user = require('../models/user');
 const UserService = require('../services/user.service');
-const db = require('./../models');
 const { StatusCodes } = require('http-status-codes');
 const UserUpDto = require('./../dtos/user-up.dto');
 const { sendEmailFromTemp } = require('./../settings/mailer.setup')
-const { JWT_SECRET, USED_SIGN_ALGO, jwt } = require('./../settings/jwt.setup');
-const { THIS_URL_SECRET } = require('../../secrets');
+const otpGenerator = require('otp-generator')
+const cacheInst = require('../settings/cache.setup');
+const { sequelize } = require('../models');
+const user = require('../models/user');
 
 const registerUser = async (req, res) => {
     const user = await UserService.registerUser(req.body);
     if (user) {
         res.status(StatusCodes.CREATED).send(user);
-        const token = jwt.sign({
-            userId: String(user.id),
-        }, JWT_SECRET, {
-            algorithm: USED_SIGN_ALGO
-        })
+        const otpCode = otpGenerator.generate(6, { 
+            upperCaseAlphabets: false, 
+            specialChars: false 
+        });
+        cacheInst.set(otpCode, user.id, { expires: 3600 })
         sendEmailFromTemp(user.email, 'Verify account!', 'activate', {
             fullName: user.fullName,
-            activationUrlPref: 'CLIENT-URL',
-            token
+            otpCode
         });
     } else {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
@@ -27,11 +26,13 @@ const registerUser = async (req, res) => {
 }
 
 const activateUser = async (req, res) => {
-    const { userId } = jwt.verify(req.params.token, JWT_SECRET, {
-        algorithm: USED_SIGN_ALGO
-    });
-    console.log(userId);
-    res.status(StatusCodes.OK).send();
+    const userId = cacheInst.take(req.params.otpCode);
+    const ok = await UserService.activateUser(userId);
+    if (ok) {
+        res.status(StatusCodes.OK).send(ok);
+    } else {
+        res.status(StatusCodes.BAD_REQUEST).send(ok)
+    }
 }
 
 const getUser = async (req, res) => {

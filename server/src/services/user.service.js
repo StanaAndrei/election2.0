@@ -47,7 +47,20 @@ const updateUser = async (newData, userId) => {
         const user = await UserModel.findByPk(userId);
         await user.update(newData);
         return true;
-    } catch(err) {
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
+
+const activateUser = async userId => {
+    try {
+        const updatedRecord = await UserModel.update(
+            { createdAt: new Date() },
+            { where: { id: userId } }
+        );
+        return updatedRecord[0] === 1;
+    } catch (err) {
         console.error(err);
         return false;
     }
@@ -58,7 +71,8 @@ const UserService = {
     getUser,
     getAllUsers,
     deleteUser,
-    updateUser
+    updateUser,
+    activateUser
 }
 
 module.exports = UserService;
