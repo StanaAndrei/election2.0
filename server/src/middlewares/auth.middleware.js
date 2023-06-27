@@ -1,16 +1,15 @@
 const { StatusCodes } = require("http-status-codes");
-const jwt = require('jsonwebtoken');
-const SECRETS = require("../../secrets");
-const UserService = require("../services/user.service");
+
+const checkJwt = (res) => {
+    
+}
 
 const isAuth = (req, res, next) => { 
+    if (!res.locals.decodedJwt) {
+        return res.send(StatusCodes.UNAUTHORIZED).send();
+    }
     try {
-        const token = req.headers['jwt'];
-        if (!token) {
-            return res.status(StatusCodes.UNAUTHORIZED).send()
-        }
-        const decodedJwt = jwt.verify(token, SECRETS.JWT_SECRET);
-        const { userId } = decodedJwt;
+        const { userId } = res.locals.decodedJwt;
         if (userId == req.params.id) {
             res.locals.userId = userId;
             next();
@@ -27,8 +26,22 @@ const isActivated = (req, res, next) => {
     
 }
 
+const isAdmin = (req, res, next) => {
+    if (!res.locals.decodedJwt) {
+        return res.send(StatusCodes.UNAUTHORIZED).send();
+    }
+
+    if (res.locals.decodedJwt.role === 'ADMIN') {
+        next();
+    } else {
+        res.status(StatusCodes.FORBIDDEN).send()
+    }
+}
+
 const AuthMiddleware = {
-    isAuth
+    isAuth,
+    isActivated,
+    isAdmin,
 }
 
 module.exports = AuthMiddleware;

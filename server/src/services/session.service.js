@@ -13,13 +13,13 @@ const createSession = async loginData => {
         return null;
     }
     const { password } = user.dataValues;
-    console.log(user.toJSON());
     const ok = bcrypt.compareSync(loginData.password, password);
     if (!ok) {
         return null;
     }
     const token = jwt.sign({
-        userId: user.dataValues.id
+        userId: user.dataValues.id,
+        role: user.dataValues.role,
     }, JWT_SECRET, {
         algorithm: USED_SIGN_ALGO
     });
