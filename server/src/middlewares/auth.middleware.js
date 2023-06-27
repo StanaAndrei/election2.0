@@ -4,7 +4,6 @@ const SECRETS = require("../../secrets");
 const UserService = require("../services/user.service");
 
 const isAuth = (req, res, next) => { 
-    console.log('asd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');  
     try {
         const token = req.headers['jwt'];
         if (!token) {
@@ -25,10 +24,7 @@ const isAuth = (req, res, next) => {
 }
 
 const isActivated = (req, res, next) => {
-    const ignorePaths = [''];
-    if (ignorePaths.includes(req.path)) {
-
-    }
+    
 }
 
 const AuthMiddleware = {
