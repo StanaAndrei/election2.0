@@ -1,9 +1,15 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Input, Heading, VStack, Center, Button, Box, FormControl, Pressable, Icon } from 'native-base';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 export default function SignupScreen({ navigation }) {
     const [show, setShow] = useState(false);
+
+    const handleClick = e => {
+        e.preventDefault();
+        
+    }
+
     return <Center w="100%">
     <Box safeArea p="2" w="90%" maxW="290" py="8">
       <Heading size="lg" color="coolGray.800" _dark={{
@@ -19,11 +25,13 @@ export default function SignupScreen({ navigation }) {
       <VStack space={3} mt="5">
         <FormControl>
           <FormControl.Label>Email</FormControl.Label>
-          <Input />
+          <Input onChange={null}/>
         </FormControl>
         <FormControl>
           <FormControl.Label>Password</FormControl.Label>
-          <Input type={show ? 'text' : 'password'} 
+          <Input 
+            type={show ? 'text' : 'password'} 
+            onChange={null}
             InputRightElement={<Pressable onPress={() => setShow(!show)}>
             <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
             </Pressable>} 
@@ -31,13 +39,15 @@ export default function SignupScreen({ navigation }) {
         </FormControl>
         <FormControl>
           <FormControl.Label>Confirm Password</FormControl.Label>
-          <Input type={show ? 'text' : 'password'} 
+          <Input 
+            type={show ? 'text' : 'password'} 
+            onChange={null}
             InputRightElement={<Pressable onPress={() => setShow(!show)}>
             <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
             </Pressable>}
           />
         </FormControl>
-        <Button mt="2" colorScheme="indigo">
+        <Button mt="2" colorScheme="indigo" onPress={handleClick}>
           Sign up
         </Button>
       </VStack>
