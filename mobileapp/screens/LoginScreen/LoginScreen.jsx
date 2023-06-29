@@ -2,24 +2,24 @@ import { Input, Heading, VStack, Center, Button, Box, Text, Link, FormControl, H
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Formik } from 'formik'
+import * as yup from 'yup';
+
+const loginSchema = yup.object({
+    email: yup.string().required().email(),
+    password: yup.string().required()
+        .min(6)
+        .max(50)
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).*$/g)
+})
 
 function LoginScreen({ navigation }) {
     const [show, setShow] = useState(false);
 
     return <Formik
         initialValues={{ email: '', password: '' }}
-        validate={values => {/*
-            const errors = {};
-            if (!values.email) {
-              errors.email = 'Required';
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = 'Invalid email address';
-            }
-            return errors;//*/
-          }}
-        onSubmit={(values, { setSubmitting }) => {
+        validationSchema={loginSchema}
+        onSubmit={(values, actions) => {
+            actions.resetForm();
             console.log(values);
         }}
     >
@@ -28,7 +28,6 @@ function LoginScreen({ navigation }) {
             errors,
             touched,
             handleChange,
-            handleBlur,
             handleSubmit,
             isSubmitting,
             /* and other goodies */
@@ -49,17 +48,19 @@ function LoginScreen({ navigation }) {
                     <VStack space={3} mt="5">
                         <FormControl>
                             <FormControl.Label>Email ID</FormControl.Label>
-                            <Input 
+                            <Input
+                                value={values.email}
                                 onChangeText={handleChange('email')}
                             />
-                            {errors.email && touched.email && errors.email}
+                            <Text>{errors.email && touched.email && errors.email}</Text>
                         </FormControl>
                         <FormControl>
                             <FormControl.Label>Password</FormControl.Label>
                             <Input type={show ? 'text' : 'password'}
                                 id='pass'
                                 name='pass'
-                                onChangeText={handleChange}
+                                value={values.password}
+                                onChangeText={handleChange('password')}
                                 InputRightElement={<Pressable onPress={() => setShow(!show)}>
                                     <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
                                 </Pressable>}
@@ -72,7 +73,7 @@ function LoginScreen({ navigation }) {
                                 Forget Password?
                             </Link>
                         </FormControl>
-                        {errors.password && touched.password && errors.password}
+                        <Text>{errors.password && touched.password && errors.password}</Text>
                         <Button onPress={handleSubmit} disabled={isSubmitting} mt="2" colorScheme="indigo">
                             Sign in
                         </Button>

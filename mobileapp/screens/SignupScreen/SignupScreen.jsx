@@ -1,56 +1,107 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { Input, Heading, VStack, Center, Button, Box, FormControl, Pressable, Icon } from 'native-base';
+import { Formik } from "formik";
+import { Input, Heading, VStack, Center, Button, Box, FormControl, Pressable, Icon, Text, ScrollView } from 'native-base';
 import React, { useState } from 'react';
+import * as yup from 'yup';
+
+const registerSchema = yup.object({
+    email: yup.string().required().email(),
+    password: yup.string().required()
+        .min(6)
+        .max(50)
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).*$/s),
+    cpassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match!'),
+    firstName: yup.string().required().matches(/^[a-zA-Z]+$/gm),
+    lastName: yup.string().required().matches(/^[a-zA-Z]+$/gm)
+})
 
 export default function SignupScreen({ navigation }) {
     const [show, setShow] = useState(false);
 
-    const handleClick = e => {
-        e.preventDefault();
-        
-    }
-
-    return <Center w="100%">
-    <Box safeArea p="2" w="90%" maxW="290" py="8">
-      <Heading size="lg" color="coolGray.800" _dark={{
-      color: "warmGray.50"
-    }} fontWeight="semibold">
-        Welcome
-      </Heading>
-      <Heading mt="1" color="coolGray.600" _dark={{
-      color: "warmGray.200"
-    }} fontWeight="medium" size="xs">
-        Sign up to continue!
-      </Heading>
-      <VStack space={3} mt="5">
-        <FormControl>
-          <FormControl.Label>Email</FormControl.Label>
-          <Input onChange={null}/>
-        </FormControl>
-        <FormControl>
-          <FormControl.Label>Password</FormControl.Label>
-          <Input 
-            type={show ? 'text' : 'password'} 
-            onChange={null}
-            InputRightElement={<Pressable onPress={() => setShow(!show)}>
-            <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
-            </Pressable>} 
-          />
-        </FormControl>
-        <FormControl>
-          <FormControl.Label>Confirm Password</FormControl.Label>
-          <Input 
-            type={show ? 'text' : 'password'} 
-            onChange={null}
-            InputRightElement={<Pressable onPress={() => setShow(!show)}>
-            <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
-            </Pressable>}
-          />
-        </FormControl>
-        <Button mt="2" colorScheme="indigo" onPress={handleClick}>
-          Sign up
-        </Button>
-      </VStack>
-    </Box>
-  </Center>;
+    return <ScrollView>
+        <Formik
+            initialValues={{ email: '', password: '', cpassword: '', firstName: '', lastName: '' }}
+            validationSchema={registerSchema}
+            onSubmit={(values, actions) => {
+                actions.resetForm();
+                console.log(values);
+                navigation.goBack();
+            }}
+        >
+            {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+            }) => (<Center w="100%">
+                <Box safeArea p="2" w="90%" maxW="290" py="8">
+                    <Heading size="lg" color="coolGray.800" _dark={{
+                        color: "warmGray.50"
+                    }} fontWeight="semibold">
+                        Welcome
+                    </Heading>
+                    <Heading mt="1" color="coolGray.600" _dark={{
+                        color: "warmGray.200"
+                    }} fontWeight="medium" size="xs">
+                        Sign up to continue!
+                    </Heading>
+                    <VStack space={3} mt="5">
+                        <FormControl>
+                            <FormControl.Label>First name</FormControl.Label>
+                            <Input
+                                value={values.firstName}
+                                onChangeText={handleChange('firstName')}
+                            />
+                            <Text>{errors.firstName && touched.firstName && errors.firstName}</Text>
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>Last name</FormControl.Label>
+                            <Input
+                                value={values.lastName}
+                                onChangeText={handleChange('lastName')}
+                            />
+                            <Text>{errors.lastName && touched.lastName && errors.lastName}</Text>
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>Email</FormControl.Label>
+                            <Input
+                                value={values.email}
+                                onChangeText={handleChange('email')}
+                            />
+                            <Text>{errors.email && touched.email && errors.email}</Text>
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>Password</FormControl.Label>
+                            <Input
+                                type={show ? 'text' : 'password'}
+                                value={values.password}
+                                onChangeText={handleChange('password')}
+                                InputRightElement={<Pressable onPress={() => setShow(!show)}>
+                                    <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
+                                </Pressable>}
+                            />
+                            <Text>{errors.password && touched.password && errors.password}</Text>
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>Confirm Password</FormControl.Label>
+                            <Input
+                                type={show ? 'text' : 'password'}
+                                value={values.cpassword}
+                                onChangeText={handleChange('cpassword')}
+                                InputRightElement={<Pressable onPress={() => setShow(!show)}>
+                                    <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="muted.400" />
+                                </Pressable>}
+                            />
+                            <Text>{errors.cpassword && touched.cpassword && errors.cpassword}</Text>
+                        </FormControl>
+                        <Button mt="2" colorScheme="indigo" onPress={handleSubmit} disabled={isSubmitting} >
+                            Sign up
+                        </Button>
+                    </VStack>
+                </Box>
+            </Center>)}
+        </Formik>
+    </ScrollView>
 }
