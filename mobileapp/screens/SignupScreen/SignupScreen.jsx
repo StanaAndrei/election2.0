@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { Input, Heading, VStack, Center, Button, Box, FormControl, Pressable, Icon, Text, ScrollView } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 
 const registerSchema = yup.object({
@@ -15,16 +15,21 @@ const registerSchema = yup.object({
     lastName: yup.string().required().matches(/^[a-zA-Z]+$/gm)
 })
 
-export default function SignupScreen({ navigation }) {
+export default function SignupScreen({ navigation, route }) {
     const [show, setShow] = useState(false);
-
     return <ScrollView>
         <Formik
             initialValues={{ email: '', password: '', cpassword: '', firstName: '', lastName: '' }}
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {
                 actions.resetForm();
-                console.log(values);
+                const { firstName, lastName, email } = values;
+                route.params.setFmdata({
+                    message: `Welcome ${firstName} ${lastName}!`,
+                    description: `We sent an activation code at ${email}.`,
+                    type: 'success'
+                })//*/
+                route.params.onGoBack();
                 navigation.goBack();
             }}
         >
