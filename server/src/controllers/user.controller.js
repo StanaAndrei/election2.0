@@ -1,6 +1,6 @@
 const UserService = require('../services/user.service');
 const { StatusCodes } = require('http-status-codes');
-const UserUpDto = require('./../dtos/user-up.dto');
+const userPatchSchema = require('../schemas/userPatch.schema');
 const { sendEmailFromTemp } = require('./../settings/mailer.setup')
 const otpGenerator = require('otp-generator')
 const cacheInst = require('../settings/cache.setup');
@@ -86,9 +86,7 @@ const updateUser = async (req, res) => {
     const { body: newData } = req;
     let parsedUserDto = undefined;
     try {
-        parsedUserDto = await UserUpDto.validate(newData, {
-            strict: true
-        });
+        parsedUserDto = await userPatchSchema.validate(newData, { stripUnknown: true });
     } catch(err) {
         console.error(err);
         return res.status(StatusCodes.BAD_REQUEST).send('INVALID_DTO');
