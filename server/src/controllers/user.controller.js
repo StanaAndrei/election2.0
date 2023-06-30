@@ -86,7 +86,7 @@ const updateUser = async (req, res) => {
     const { body: newData } = req;
     let parsedUserDto = undefined;
     try {
-        parsedUserDto = await userPatchSchema.validate(newData, { stripUnknown: true });
+        parsedUserDto = userPatchSchema.validate(newData, { stripUnknown: true });
     } catch(err) {
         console.error(err);
         return res.status(StatusCodes.BAD_REQUEST).send('INVALID_DTO');
