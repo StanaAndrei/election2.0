@@ -15,19 +15,17 @@ const loginSchema = yup.object({
 
 function LoginScreen({ navigation, route }) {
     const [show, setShow] = useState(false);
-    const [fmdata, setFmdata] = useState(null);
 
     const handleGoSignUp = () => {
         navigation.navigate('Signup', {
-            onGoBack: () => {
+            onGoBack: (fmdata) => {
                 showMessage({
                     message: fmdata.message,
                     description: fmdata.description,
                     type: fmdata.type,
-                    duration: 3000
+                    duration: 6000
                 });//*/
-            },
-            setFmdata: setFmdata
+            }
         })
     }
 

@@ -24,12 +24,11 @@ export default function SignupScreen({ navigation, route }) {
             onSubmit={(values, actions) => {
                 actions.resetForm();
                 const { firstName, lastName, email } = values;
-                route.params.setFmdata({
+                route.params.onGoBack({
                     message: `Welcome ${firstName} ${lastName}!`,
                     description: `We sent an activation code at ${email}.`,
                     type: 'info'
-                })//*/
-                route.params.onGoBack();
+                });
                 navigation.goBack();
             }}
         >
