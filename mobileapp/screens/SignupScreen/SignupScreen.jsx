@@ -27,7 +27,7 @@ export default function SignupScreen({ navigation, route }) {
                 route.params.setFmdata({
                     message: `Welcome ${firstName} ${lastName}!`,
                     description: `We sent an activation code at ${email}.`,
-                    type: 'success'
+                    type: 'info'
                 })//*/
                 route.params.onGoBack();
                 navigation.goBack();

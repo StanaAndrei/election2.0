@@ -31,6 +31,18 @@ function LoginScreen({ navigation, route }) {
         })
     }
 
+    const handleGoActivate = () => {
+        navigation.navigate('Activate', {
+            onGoBack: () => {
+                showMessage({
+                    message: 'Activation successful!',
+                    type: 'success',
+                    duration: 3000
+                });//*/
+            },
+        })
+    }
+
     return <ScrollView>
         <FlashMessage position="top" />
         <Formik
@@ -109,6 +121,13 @@ function LoginScreen({ navigation, route }) {
                                     Sign Up
                                 </Link>
                             </HStack>
+                            <Link paddingLeft={'30%'} alignContent={'center'} _text={{
+                                    color: "indigo.500",
+                                    fontWeight: "medium",
+                                    fontSize: "sm"
+                                }} onPress={handleGoActivate}>
+                                    Activate account!
+                            </Link>
                         </VStack>
                     </Box>
                 </Center>

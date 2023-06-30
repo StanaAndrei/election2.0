@@ -30,7 +30,8 @@ transporter.use('compile', hbs(handleBarOptions))
 transporter.verify().then(console.log).catch(console.error);
 
 function sendEmailFromTemp(to, subject, template, context) {
-    //console.log(`${to}: ${subject}\n`, context);
+    console.log(`${to}: ${subject}\n`, context);
+    /*
     transporter.sendMail({
         from: 'testmailer691337@gmail.com',
         to,
