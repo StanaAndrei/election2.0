@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import { Input, Heading, VStack, Center, Button, Box, FormControl, Pressable, Icon, Text, ScrollView } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
+import UserAPI from "../../api/user.api";
 
 const registerSchema = yup.object({
     email: yup.string().required().email(),
@@ -22,14 +23,22 @@ export default function SignupScreen({ navigation, route }) {
             initialValues={{ email: '', password: '', cpassword: '', firstName: '', lastName: '' }}
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {
-                actions.resetForm();
-                const { firstName, lastName, email } = values;
-                route.params.onGoBack({
-                    message: `Welcome ${firstName} ${lastName}!`,
-                    description: `We sent an activation code at ${email}.`,
-                    type: 'info'
-                });
-                navigation.goBack();
+                UserAPI.registerUser(values).then(ok => {
+                    if (ok) {
+                        actions.resetForm();
+                        const { firstName, lastName, email } = values;
+                        route.params.onGoBack({
+                            message: `Welcome ${firstName} ${lastName}!`,
+                            description: `We sent an activation code at ${email}.`,
+                            type: 'info'
+                        });
+                        navigation.goBack();
+                    } else {
+                        alert("ERROR!");
+                        actions.setSubmitting(false);
+                    }//*/
+                })
+                
             }}
         >
             {({
