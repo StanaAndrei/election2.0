@@ -4,6 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Formik } from 'formik'
 import * as yup from 'yup';
 import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
+import * as SecureStore from 'expo-secure-store';
 
 const loginSchema = yup.object({
     email: yup.string().required().email(),
@@ -45,10 +46,9 @@ function LoginScreen({ navigation, route }) {
         <FlashMessage position="top" />
         <Formik
             initialValues={{ email: '', password: '' }}
-            validationSchema={loginSchema}
+            //validationSchema={loginSchema}
             onSubmit={(values, actions) => {
-                actions.resetForm();
-                console.log(values);
+                //actions.resetForm();
             }}
         >
             {({
@@ -57,8 +57,6 @@ function LoginScreen({ navigation, route }) {
                 touched,
                 handleChange,
                 handleSubmit,
-                isSubmitting,
-                /* and other goodies */
             }) => (
                 <Center w="100%">
                     <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -102,7 +100,7 @@ function LoginScreen({ navigation, route }) {
                                 </Link>
                             </FormControl>
                             <Text>{errors.password && touched.password && errors.password}</Text>
-                            <Button onPress={handleSubmit} disabled={isSubmitting} mt="2" colorScheme="indigo">
+                            <Button onPress={handleSubmit} mt="2" colorScheme="indigo">
                                 Sign in
                             </Button>
                             <HStack mt="6" justifyContent="center">

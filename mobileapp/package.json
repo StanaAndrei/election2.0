@@ -13,6 +13,7 @@
     "@react-navigation/native-stack": "^6.9.13",
     "@react-navigation/stack": "^6.3.17",
     "expo": "~48.0.18",
+    "expo-secure-store": "~12.1.1",
     "expo-status-bar": "~1.4.4",
     "formik": "^2.4.2",
     "http-status-codes": "^2.2.0",
@@ -23,11 +24,14 @@
     "react-native-axios": "^0.17.1",
     "react-native-dotenv": "^3.4.9",
     "react-native-flash-message": "^0.4.1",
+    "react-native-gesture-handler": "^2.12.0",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
+    "react-native-svg": "^13.9.0",
     "react-native-web": "~0.18.11",
     "react-navigation": "^4.4.4",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
