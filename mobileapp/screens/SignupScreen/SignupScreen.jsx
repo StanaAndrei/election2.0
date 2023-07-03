@@ -24,6 +24,9 @@ export default function SignupScreen({ navigation, route }) {
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {
                 UserAPI.registerUser(values).then(ok => {
+                    if (!values.cpassword) {
+                        return;
+                    }
                     if (ok) {
                         actions.resetForm();
                         const { firstName, lastName, email } = values;
