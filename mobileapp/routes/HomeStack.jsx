@@ -7,9 +7,7 @@ const Stack = createStackNavigator();
 import { View, Text, Button } from 'react-native';
 
 export default function HomeStack() {
-    return <>
-        <NavigationContainer>
-        <Stack.Navigator>
+    return <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen}  />
         <Stack.Screen name='Details' component={DetailsScreen} options={{
             headerLeft: () => null,
@@ -22,6 +20,4 @@ export default function HomeStack() {
             )
         }}/>
         </Stack.Navigator>
-        </NavigationContainer>
-    </>
 }
