@@ -1,4 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
+const { UserModel } = require("../models");
 
 const checkJwt = (res) => {
     
@@ -22,8 +23,15 @@ const isAuth = (req, res, next) => {
     }
 }
 
-const isActivated = (req, res, next) => {
-    
+const isActivated = async (req, res, next) => {
+    try {
+        const user = await UserModel.findOne({
+            where: { email: req.body.email }
+        })
+        next();
+    } catch(err) {
+        console.error(err);
+    }
 }
 
 const isAdmin = (req, res, next) => {

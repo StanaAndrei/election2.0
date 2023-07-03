@@ -5,6 +5,7 @@ import { Formik } from 'formik'
 import * as yup from 'yup';
 import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
 import * as SecureStore from 'expo-secure-store';
+import SessionApi from '../../api/session.api';
 
 const loginSchema = yup.object({
     email: yup.string().required().email(),
@@ -49,6 +50,13 @@ function LoginScreen({ navigation, route }) {
             //validationSchema={loginSchema}
             onSubmit={(values, actions) => {
                 //actions.resetForm();
+                SessionApi.createSession(values).then(token => {
+                    if (token) {
+                        console.log(token);
+                    } else {
+                        alert('LOGIN FAILED!');
+                    }
+                })
             }}
         >
             {({
