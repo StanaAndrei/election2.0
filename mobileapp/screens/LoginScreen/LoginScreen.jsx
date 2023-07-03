@@ -45,6 +45,18 @@ function LoginScreen({ navigation, route }) {
         })
     }
 
+    const handleGoFP = () => {
+        navigation.navigate('Recovery', {
+            onGoBack: () => {
+                showMessage({
+                    message: 'Password resset successful!',
+                    type: 'success',
+                    duration: 3000
+                });//*/
+            }
+        })
+    }
+
     return <ScrollView>
         <FlashMessage position="top" />
         <Formik
@@ -106,7 +118,7 @@ function LoginScreen({ navigation, route }) {
                                     fontSize: "xs",
                                     fontWeight: "500",
                                     color: "indigo.500"
-                                }} alignSelf="flex-end" mt="1">
+                                }} alignSelf="flex-end" mt="1" onPress={handleGoFP}>
                                     Forget Password?
                                 </Link>
                             </FormControl>

@@ -33,9 +33,30 @@ const getUser = async id => {
     }
 }
 
+const getReqRec = async email => {
+    try {
+        const res = await axiosInst.get(`/user/request-recovery/${email}`)
+        return res;
+    } catch(err) {
+        return null;
+    }
+}
+
+const resetPassword =  async (data) => {
+    try {
+        const res = await axiosInst.patch('/user/reset-password', data);
+        return res.status === StatusCodes.OK;
+    } catch(err) {
+        console.error(err);
+        return false;
+    }
+}
+
 const UserAPI = {
     registerUser,
     activateUser,
     getUser,
+    getReqRec,
+    resetPassword
 }
 export default UserAPI;
