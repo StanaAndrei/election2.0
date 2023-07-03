@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
 import * as SecureStore from 'expo-secure-store';
 import SessionApi from '../../api/session.api';
+import useAuthRepo from '../../repositories/auth.repo';
 
 const loginSchema = yup.object({
     email: yup.string().required().email(),
@@ -17,6 +18,7 @@ const loginSchema = yup.object({
 
 function LoginScreen({ navigation, route }) {
     const [show, setShow] = useState(false);
+    const logIn = useAuthRepo(state => state.logIn)
 
     const handleGoSignUp = () => {
         navigation.navigate('Signup', {
@@ -53,6 +55,7 @@ function LoginScreen({ navigation, route }) {
                 SessionApi.createSession(values).then(token => {
                     if (token) {
                         console.log(token);
+                        logIn(token);
                     } else {
                         alert('LOGIN FAILED!');
                     }

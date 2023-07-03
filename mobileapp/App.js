@@ -5,6 +5,7 @@ import AuthStack from './routes/AuthStack';
 import { NativeBaseProvider } from 'native-base';
 import { axiosInst } from './api';
 import DrawerNav from './routes/DrawerNav';
+import useAuthRepo from './repositories/auth.repo';
 
 function App() {
 
@@ -12,7 +13,8 @@ function App() {
         console.log('OK!');
     }, [])
 
-    if (0) {
+    const token = useAuthRepo(state => state.token);
+    if (!token) {
         return <NativeBaseProvider>
             <AuthStack />
         </NativeBaseProvider>
