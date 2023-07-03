@@ -16,7 +16,7 @@ const registerUser = async userRegData => {
 const getUser = async userId => {
     try {
         const user = await UserModel.findByPk(userId);
-        return user.dataValues;
+        return user;
     } catch (e) {
         console.error(e);
         return null;

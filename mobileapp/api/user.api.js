@@ -23,8 +23,19 @@ const activateUser = async otpCode => {
     return res.status == StatusCodes.OK;
 }
 
+const getUser = async id => {
+    try {
+        const res = await axiosInst.get(`/user/${id}`);
+        return res.data
+    } catch(err) {
+        console.error(err);
+        return null;
+    }
+}
+
 const UserAPI = {
     registerUser,
     activateUser,
+    getUser,
 }
 export default UserAPI;
