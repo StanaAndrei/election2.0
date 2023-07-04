@@ -17,8 +17,9 @@ app.use(helmet());
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/session', sessionRouter);
+const PREFIX = '/api/v1'
+app.use(`${PREFIX}/user`, userRouter);
+app.use(`${PREFIX}/session`, sessionRouter);
 
 const port = process.env.PORT || 3000;
 app.get('/', (req, res) => res.send('HI!'));
