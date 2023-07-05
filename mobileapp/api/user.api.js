@@ -1,4 +1,4 @@
-import { axiosInst } from ".";
+import { axiosAuthInst, axiosInst } from ".";
 import { StatusCodes } from 'http-status-codes';
 
 const registerUser = async userData => {
@@ -52,11 +52,22 @@ const resetPassword =  async (data) => {
     }
 }
 
+const delUser = async userId => {
+    try {
+        const res = await axiosAuthInst.delete(`/user/${userId}`);
+        return res.status === StatusCodes.OK;
+    } catch(err) {
+        console.error(err);
+        return false;
+    }
+}
+
 const UserAPI = {
     registerUser,
     activateUser,
     getUser,
     getReqRec,
-    resetPassword
+    resetPassword,
+    delUser,
 }
 export default UserAPI;

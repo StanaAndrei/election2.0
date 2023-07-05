@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const _repo = (set, get) => ({
     token: null,
     logOut: () => set({ token: null }),
-    logIn: token => set({ token })
+    logIn: token => set({ token }),
 })
 
 const storageOpt = {
@@ -16,3 +16,6 @@ const storageOpt = {
 const useAuthRepo = create(persist(_repo, storageOpt))
 
 export default useAuthRepo;
+export const getToken = () => {
+    return useAuthRepo.getState().token
+}

@@ -12,12 +12,21 @@ function ProfileScreen({ navigation }) {
 
     useEffect(() => {
         const userId = jwt_decode(token).userId;
-        console.log(userId);
         UserAPI.getUser(userId).then(res => {
             console.log(res);
             setUser(res);
         })
     }, [])
+
+    const handleDel = () => {
+        UserAPI.delUser(jwt_decode(token).userId).then(res => {
+            if (res) {
+                logOut();
+            } else {
+                alert('ERROR!')
+            }
+        })
+    }
 
     if (!user) {
         return <HStack space={2} justifyContent="center">
@@ -31,7 +40,8 @@ function ProfileScreen({ navigation }) {
     return (
         <>
             <Text fontSize="5xl">{user.fullName}</Text>
-            <Button onPress={logOut}>logout</Button>
+            <Button marginLeft={'31%'} w={'34%'} size={'md'} colorScheme={'secondary'} onPress={handleDel}>Delete</Button>
+            <Button marginLeft={'31%'} w={'34%'} onPress={logOut}>logout</Button>
         </>
     );
 }
