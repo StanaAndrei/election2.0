@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeStack from './HomeStack';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import ProfileStack from './ProfileStack';
 
 
 function NotificationsScreen({ navigation }) {
@@ -22,7 +23,7 @@ export default function DrawerNav() {
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="HomeStack" component={HomeStack} />
         <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-        <Drawer.Screen name='ProfileScreen' component={ProfileScreen} />
+        <Drawer.Screen name='ProfileStack' component={ProfileStack} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
