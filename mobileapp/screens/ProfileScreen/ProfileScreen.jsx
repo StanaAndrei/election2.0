@@ -61,9 +61,11 @@ function ProfileScreen({ navigation }) {
                     <Ionicons name="settings-outline" size={24} style={tailwind`text-slate-900`} />
                     <Text style={tailwind`text-slate-900 text-lg`}>Settings</Text>
                 </Pressable>
-                <Pressable style={tailwind`flex-row items-center gap-2 px-8`}>
-                    <Ionicons name="help-buoy-outline" size={24} style={tailwind`text-slate-900`} />
-                    <Text style={tailwind`text-slate-900 text-lg`}>Help</Text>
+                <Pressable
+                    onPress={() => navigation.navigate('Pic')}
+                    style={tailwind`flex-row items-center gap-2 px-8`}>
+                    <Ionicons name="image-outline" size={24} style={tailwind`text-slate-900`} />
+                    <Text style={tailwind`text-slate-900 text-lg`}>Profie-picture</Text>
                 </Pressable>
                 <Pressable onPress={logOut} style={tailwind`flex-row items-center gap-2 px-8`}>
                     <MaterialIcons name="logout" size={24} style={tailwind`text-slate-900`} />
