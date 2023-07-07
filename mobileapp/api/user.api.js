@@ -79,5 +79,6 @@ const UserAPI = {
     getReqRec,
     resetPassword,
     delUser,
+    updateUser,
 }
 export default UserAPI;

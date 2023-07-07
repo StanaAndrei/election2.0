@@ -7,8 +7,8 @@ const registerSchema = yup.object({
         .max(50)
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).*$/s, 'Passwords must have 1 lower/upper letter, nr, special char'),
     cpassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match!'),
-    firstName: yup.string().required().matches(/^[a-zA-Z]+$/gm),
-    lastName: yup.string().required().matches(/^[a-zA-Z]+$/gm)
+    firstName: yup.string().required().min(3).matches(/^[a-zA-Z]+$/gm),
+    lastName: yup.string().required().min(3).matches(/^[a-zA-Z]+$/gm)
 })
 
 export default registerSchema;

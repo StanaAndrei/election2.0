@@ -12,13 +12,14 @@ function ProfileScreen({ navigation }) {
     const logOut = useAuthRepo(state => state.logOut)
     const token = useAuthRepo(state => state.token)
     const [user, setUser] = useState(null);
+    const [utilState, setUtilState] = useState(false);
 
     useEffect(() => {
         const userId = jwt_decode(token).userId;
         UserAPI.getUser(userId).then(res => {
             setUser(res);
         })
-    }, [])
+    }, [utilState])
 
     const handleDel = () => {
         UserAPI.delUser(jwt_decode(token).userId).then(res => {
@@ -27,6 +28,13 @@ function ProfileScreen({ navigation }) {
             } else {
                 alert('ERROR!')
             }
+        })
+    }
+
+    const handleGoSettings = () => {
+        navigation.navigate('Settings', {
+            user: user,
+            onGoBack: () => setUtilState(prevState => !prevState)
         })
     }
 
@@ -56,7 +64,7 @@ function ProfileScreen({ navigation }) {
             </View>
             <View style={tailwind`flex-1 justify-center gap-8`}>
                 <Pressable
-                    onPress={() => navigation.navigate('Settings')}
+                    onPress={handleGoSettings}
                     style={tailwind`flex-row items-center gap-2 px-8`}>
                     <Ionicons name="settings-outline" size={24} style={tailwind`text-slate-900`} />
                     <Text style={tailwind`text-slate-900 text-lg`}>Settings</Text>

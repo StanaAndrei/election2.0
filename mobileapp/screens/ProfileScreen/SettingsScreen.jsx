@@ -2,15 +2,32 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import { Input, Heading, VStack, Center, Button, Box, FormControl, Pressable, Icon, Text, ScrollView } from 'native-base';
 import React, { useEffect, useState } from 'react';
+import UserAPI from '../../api/user.api'
+import useAuthRepo from "../../repositories/auth.repo";
+import jwt_decode from 'jwt-decode';
 
-function SettingsScreen({ navigation }) {
-    const [show, setShow] = useState(false);
+
+function SettingsScreen({ navigation, route }) {
+    const { user } = route.params;
+    const token = useAuthRepo(state => state.token)
 
     return <ScrollView>
         <Formik
-            initialValues={{ email: '', firstName: '', lastName: '' }}
+            initialValues={{ 
+                email: `${user.email}`,
+                firstName: `${user.firstName}`, 
+                lastName: `${user.lastName}` }}
             onSubmit={(values, actions) => {
                 console.log(values);
+                console.log(route.params.user);
+                UserAPI.updateUser(jwt_decode(token).userId, values).then(res => {
+                    if (res) {
+                        route.params.onGoBack();
+                        navigation.goBack();
+                    } else {
+                        alert('ERROR!');
+                    }
+                })//*/
             }}
         >
             {({
