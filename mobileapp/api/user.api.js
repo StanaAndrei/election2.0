@@ -62,6 +62,16 @@ const delUser = async userId => {
     }
 }
 
+const updateUser = async (userId, userData) => {
+    try {
+        const res = await axiosAuthInst.patch(`/user/${userId}`, userData);
+        return res.status === StatusCodes.ACCEPTED
+    } catch(err) {
+        console.error(err);
+        return false;
+    }
+}
+
 const UserAPI = {
     registerUser,
     activateUser,
