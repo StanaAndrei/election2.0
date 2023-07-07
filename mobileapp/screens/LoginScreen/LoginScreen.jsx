@@ -2,19 +2,9 @@ import { Input, Heading, VStack, Center, Button, Box, Text, Link, FormControl, H
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Formik } from 'formik'
-import * as yup from 'yup';
 import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
-import * as SecureStore from 'expo-secure-store';
 import SessionApi from '../../api/session.api';
 import useAuthRepo from '../../repositories/auth.repo';
-
-const loginSchema = yup.object({
-    email: yup.string().required().email(),
-    password: yup.string().required()
-        .min(6)
-        .max(50)
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).*$/g)
-})
 
 function LoginScreen({ navigation, route }) {
     const [show, setShow] = useState(false);
