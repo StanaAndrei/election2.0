@@ -38,6 +38,12 @@ function ProfileScreen({ navigation }) {
         })
     }
 
+    const handleGoPic = () => {
+        navigation.navigate('Pic', {
+            onGoBack: () => setUtilState(prevState => !prevState)
+        })
+    }
+
     if (!user) {
         return <HStack space={2} justifyContent="center">
             <Spinner accessibilityLabel="Loading posts" />
@@ -52,7 +58,7 @@ function ProfileScreen({ navigation }) {
             <View style={tailwind`flex-1 items-center justify-center gap-8`} >
                 <TouchableHighlight onPress={null}>
                     <Image
-                        source={{ uri: 'https://source.unsplash.com/random' }}
+                        source={{ uri: user.pic }}
                         style={tailwind`w-24 h-24 rounded-full`}
                         resizeMode="cover"
                     />
@@ -70,7 +76,7 @@ function ProfileScreen({ navigation }) {
                     <Text style={tailwind`text-slate-900 text-lg`}>Settings</Text>
                 </Pressable>
                 <Pressable
-                    onPress={() => navigation.navigate('Pic')}
+                    onPress={handleGoPic}
                     style={tailwind`flex-row items-center gap-2 px-8`}>
                     <Ionicons name="image-outline" size={24} style={tailwind`text-slate-900`} />
                     <Text style={tailwind`text-slate-900 text-lg`}>Profie-picture</Text>

@@ -4,6 +4,7 @@ const {
 } = require('sequelize');
 const bcrypt = require('bcrypt');
 const { GLOBAL_SALT } = require('../settings/salt.setup');
+const { DEFAULT_IMG } = require('../../constants');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -38,6 +39,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('NORMAL', 'ADMIN'),
         allowNull: false,
         defaultValue: 'NORMAL'
+    },
+    pic: {
+        type: DataTypes.TEXT('long'),
+        get() {
+            const rawVal = this.getDataValue('pic');
+            return rawVal ? `data:image/jpeg;base64,${rawVal}` : DEFAULT_IMG;
+        }
     },
     fullName: {
         type: DataTypes.VIRTUAL,

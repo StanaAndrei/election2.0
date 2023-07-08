@@ -2,9 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Text } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import { Button, Image, View, Platform } from 'react-native';
+import UserAPI from '../../api/user.api';
+import useAuthRepo from '../../repositories/auth.repo';
+import jwt_decode from 'jwt-decode';
+import * as ImageManipulator from 'expo-image-manipulator'
 
-function PicScreen({navigation}) {
+function PicScreen({ navigation, route }) {
     const [image, setImage] = useState(null);
+    const token = useAuthRepo(state => state.token)
+
+    const resizeImg = async imgUri => {
+        const resizedPhoto = await ImageManipulator.manipulateAsync(
+            imgUri,
+            [{ resize: { width: 200, height: 200 } }], // resize to width of 300 and preserve aspect ratio 
+            { compress: 0.7, format: 'jpeg', base64: true },
+           );
+        return resizedPhoto;
+    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -19,21 +33,35 @@ function PicScreen({navigation}) {
         console.log('result:');
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
-            console.log(result.assets[0].base64);
+            const res = await resizeImg(result.assets[0].uri)
+            console.log('====================================');
+            console.log(res.base64.length);
+            console.log('====================================');
+            setImage(res);
+            //console.log(result.assets[0].base64.startsWith('data:image/png;base64,'));
         }
     };
 
-    const handleUpload = () => {
-        //request
-        navigation.goBack();
+    const handleUpload = () => {        
+        UserAPI.updateUser(jwt_decode(token).userId, {
+            pic: image.base64
+        }).then(res => {
+            if (res) {
+                setTimeout(() => {
+                    route.params.onGoBack();
+                    navigation.goBack()
+                }, 250);
+            } else {
+                alert('ERROR!')
+            }
+        })//*/
     }
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Button title="Pick an image from camera roll" onPress={pickImage} />
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            {image && <Button title="Upload" onPress={handleUpload} /> }
+            {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 200 }} />}
+            {image && <Button title="Upload" onPress={handleUpload} />}
         </View>
     );
 }
