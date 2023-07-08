@@ -21,16 +21,6 @@ function ProfileScreen({ navigation }) {
         })
     }, [utilState])
 
-    const handleDel = () => {
-        UserAPI.delUser(jwt_decode(token).userId).then(res => {
-            if (res) {
-                logOut();
-            } else {
-                alert('ERROR!')
-            }
-        })
-    }
-
     const handleGoSettings = () => {
         navigation.navigate('Settings', {
             user: user,

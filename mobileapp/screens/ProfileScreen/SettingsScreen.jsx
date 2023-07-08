@@ -5,18 +5,35 @@ import React, { useEffect, useState } from 'react';
 import UserAPI from '../../api/user.api'
 import useAuthRepo from "../../repositories/auth.repo";
 import jwt_decode from 'jwt-decode';
-
+import { Modal } from "native-base";
 
 function SettingsScreen({ navigation, route }) {
     const { user } = route.params;
     const token = useAuthRepo(state => state.token)
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const logOut = useAuthRepo(state => state.logOut)
+
+    const handleWantDel = () => {
+        setModalVisible(!modalVisible);
+    }
+
+    const handleDel = () => {
+        UserAPI.delUser(jwt_decode(token).userId).then(res => {
+            if (res) {
+                logOut();
+            } else {
+                alert('ERROR!')
+            }
+        })//*/
+    }
 
     return <ScrollView>
         <Formik
-            initialValues={{ 
+            initialValues={{
                 email: `${user.email}`,
-                firstName: `${user.firstName}`, 
-                lastName: `${user.lastName}` }}
+                firstName: `${user.firstName}`,
+                lastName: `${user.lastName}`
+            }}
             onSubmit={(values, actions) => {
                 console.log(values);
                 console.log(route.params.user);
@@ -81,6 +98,35 @@ function SettingsScreen({ navigation, route }) {
                 </Box>
             </Center>)}
         </Formik>
+        <Modal isOpen={modalVisible} onClose={setModalVisible} size={'sm'}>
+            <Modal.Content maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>Delete account!</Modal.Header>
+                <Modal.Body>
+                    <ScrollView>
+                        <Text>
+                            Are you sure?
+                        </Text>
+                    </ScrollView>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button.Group space={2}>
+                        <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                            setModalVisible(false);
+                        }}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme={'secondary'} onPress={() => {
+                            setModalVisible(false);
+                            handleDel();
+                        }}>
+                            Yes
+                        </Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal.Content>
+        </Modal>
+        <Button onPress={handleWantDel} marginTop={'15%'} size={'sm'} variant={'outline'} colorScheme={'secondary'}>DELETE ACCOUNT</Button>
     </ScrollView>
 }
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'native-base';
+import { Text, Icon, Button } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Image, View, Platform } from 'react-native';
+import { Image, View, Platform } from 'react-native';
 import UserAPI from '../../api/user.api';
 import useAuthRepo from '../../repositories/auth.repo';
 import jwt_decode from 'jwt-decode';
 import * as ImageManipulator from 'expo-image-manipulator'
+import { Ionicons } from "@expo/vector-icons";
 
 function PicScreen({ navigation, route }) {
     const [image, setImage] = useState(null);
@@ -16,7 +17,7 @@ function PicScreen({ navigation, route }) {
             imgUri,
             [{ resize: { width: 200, height: 200 } }], // resize to width of 300 and preserve aspect ratio 
             { compress: 0.7, format: 'jpeg', base64: true },
-           );
+        );
         return resizedPhoto;
     }
 
@@ -42,7 +43,7 @@ function PicScreen({ navigation, route }) {
         }
     };
 
-    const handleUpload = () => {        
+    const handleUpload = () => {
         UserAPI.updateUser(jwt_decode(token).userId, {
             pic: image.base64
         }).then(res => {
@@ -59,9 +60,11 @@ function PicScreen({ navigation, route }) {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Pick an image from camera roll" onPress={pickImage} />
+            <Button onPress={pickImage}>Pick an image from camera roll</Button>
             {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 200 }} />}
-            {image && <Button title="Upload" onPress={handleUpload} />}
+            {image && <Button onPress={handleUpload} leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm" />}>
+                Upload
+            </Button>}
         </View>
     );
 }
