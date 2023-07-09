@@ -6,13 +6,14 @@ import HomeStack from './HomeStack';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import ProfileStack from './ProfileStack';
 import { Box, useColorMode, useColorModeValue, Text } from 'native-base';
+import useThemeRepo from '../repositories/theme.repo';
 
 
 function NotificationsScreen({ navigation }) {
     return (
-        <Box flex={1} bg={'coolGray.700'} width={'100%'} mt={1} safeArea >
+        <Box flex={1} bg={'#081521'} width={'100%'} mt={1} safeArea >
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>lalalal</Text>
+                <Text color={'white'}>lalalal@!</Text>
             </View>
         </Box>
     );
@@ -23,13 +24,15 @@ const Drawer = createDrawerNavigator();
 export default function DrawerNav() {
     const { toggleColorMode } = useColorMode();
 
-    const text = useColorModeValue('Light', 'Dark');
-    const bg = useColorModeValue('wormGrey.50', 'coolGrey.700')
+    const text = useColorModeValue('LIGHT', 'DARK');
+    const theme = useColorModeValue({bg: 'white', fg: 'black'}, {bg: '#080a1f', fg: 'white'})
+    const setTheme = useThemeRepo(state => state.setTheme)
 
     const handleToggleTheme = () => {
         toggleColorMode();
         console.log('====================================');
-        console.log(bg);
+        console.log(theme.bg);
+        setTheme(theme)
         console.log('====================================');
     }
 
