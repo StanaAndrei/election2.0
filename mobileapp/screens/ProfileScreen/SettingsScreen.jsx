@@ -6,6 +6,7 @@ import UserAPI from '../../api/user.api'
 import useAuthRepo from "../../repositories/auth.repo";
 import jwt_decode from 'jwt-decode';
 import { Modal } from "native-base";
+import useThemeRepo from "../../repositories/theme.repo";
 
 function SettingsScreen({ navigation, route }) {
     const { user } = route.params;
@@ -26,6 +27,7 @@ function SettingsScreen({ navigation, route }) {
             }
         })//*/
     }
+    const theme = useThemeRepo(state => state.theme)
 
     return <ScrollView>
         <Formik
@@ -54,9 +56,9 @@ function SettingsScreen({ navigation, route }) {
                 handleChange,
                 handleSubmit,
                 isSubmitting,
-            }) => (<Center w="100%">
-                <Box safeArea p="2" w="90%" maxW="290" py="8">
-                    <Heading size="lg" color="coolGray.800" _dark={{
+            }) => (<Center height={'100%'} bg={theme.bg} w="100%">
+                <Box bg={theme.bg} safeArea p="2" w="90%" maxW="290" py="8">
+                    <Heading size="lg" color={theme.fg} _dark={{
                         color: "warmGray.50"
                     }} fontWeight="semibold">
                         Welcome
@@ -70,6 +72,7 @@ function SettingsScreen({ navigation, route }) {
                         <FormControl>
                             <FormControl.Label>First name</FormControl.Label>
                             <Input
+                                color={theme.fg}
                                 value={values.firstName}
                                 onChangeText={handleChange('firstName')}
                             />
@@ -78,6 +81,7 @@ function SettingsScreen({ navigation, route }) {
                         <FormControl>
                             <FormControl.Label>Last name</FormControl.Label>
                             <Input
+                                color={theme.fg}
                                 value={values.lastName}
                                 onChangeText={handleChange('lastName')}
                             />
@@ -86,6 +90,7 @@ function SettingsScreen({ navigation, route }) {
                         <FormControl>
                             <FormControl.Label>Email</FormControl.Label>
                             <Input
+                                color={theme.fg}
                                 value={values.email}
                                 onChangeText={handleChange('email')}
                             />
@@ -96,6 +101,7 @@ function SettingsScreen({ navigation, route }) {
                         </Button>
                     </VStack>
                 </Box>
+                <Button onPress={handleWantDel} marginTop={'35%'} marginBottom={'0%'} size={'sm'} variant={'outline'} colorScheme={'secondary'}>DELETE ACCOUNT</Button>
             </Center>)}
         </Formik>
         <Modal isOpen={modalVisible} onClose={setModalVisible} size={'sm'}>
@@ -126,7 +132,6 @@ function SettingsScreen({ navigation, route }) {
                 </Modal.Footer>
             </Modal.Content>
         </Modal>
-        <Button onPress={handleWantDel} marginTop={'15%'} size={'sm'} variant={'outline'} colorScheme={'secondary'}>DELETE ACCOUNT</Button>
     </ScrollView>
 }
 

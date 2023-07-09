@@ -7,6 +7,7 @@ import useAuthRepo from '../../repositories/auth.repo';
 import jwt_decode from 'jwt-decode';
 import * as ImageManipulator from 'expo-image-manipulator'
 import { Ionicons } from "@expo/vector-icons";
+import useThemeRepo from '../../repositories/theme.repo';
 
 function PicScreen({ navigation, route }) {
     const [image, setImage] = useState(null);
@@ -58,8 +59,10 @@ function PicScreen({ navigation, route }) {
         })//*/
     }
 
+    const theme = useThemeRepo(state => state.theme)
+
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: theme.bg }}>
             <Button onPress={pickImage}>Pick an image from camera roll</Button>
             {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 200 }} />}
             {image && <Button onPress={handleUpload} leftIcon={<Icon as={Ionicons} name="cloud-upload-outline" size="sm" />}>

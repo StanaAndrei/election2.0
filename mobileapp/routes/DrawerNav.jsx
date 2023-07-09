@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Button, View,  } from 'react-native';
-import { DrawerContentScrollView, createDrawerNavigator, DrawerItem, DrawerItemList,  } from '@react-navigation/drawer';
+import { Button, View, } from 'react-native';
+import { DrawerContentScrollView, createDrawerNavigator, DrawerItem, DrawerItemList, } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeStack from './HomeStack';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import ProfileStack from './ProfileStack';
 import { Box, useColorMode, useColorModeValue, Text } from 'native-base';
 import useThemeRepo from '../repositories/theme.repo';
-
+import { THEME_DARK, THEME_LIGHT } from '../constants'
 
 function NotificationsScreen({ navigation }) {
     return (
@@ -22,18 +22,11 @@ function NotificationsScreen({ navigation }) {
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNav() {
-    const { toggleColorMode } = useColorMode();
-
-    const text = useColorModeValue('LIGHT', 'DARK');
-    const theme = useColorModeValue({bg: 'white', fg: 'black'}, {bg: '#080a1f', fg: 'white'})
-    const setTheme = useThemeRepo(state => state.setTheme)
+    const toggleTheme = useThemeRepo(state => state.toggleTheme)
+    const theme = useThemeRepo(state => state.theme)
 
     const handleToggleTheme = () => {
-        toggleColorMode();
-        console.log('====================================');
-        console.log(theme.bg);
-        setTheme(theme)
-        console.log('====================================');
+        toggleTheme()
     }
 
     return (
@@ -42,7 +35,7 @@ export default function DrawerNav() {
                 return (
                     <DrawerContentScrollView {...props}>
                         <DrawerItemList {...props} />
-                        <DrawerItem label={`toggle: ${text}`} onPress={handleToggleTheme} />
+                        <DrawerItem label={`${theme.name}`} onPress={handleToggleTheme} />
                     </DrawerContentScrollView>
                 )
             }}>
