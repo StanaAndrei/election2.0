@@ -26,9 +26,6 @@ export default function DrawerNav() {
     const theme = useThemeRepo(state => state.theme)
 
     const handleToggleTheme = () => {
-        console.log('====================================');
-        console.log(getTheme());
-        console.log('====================================');
         setTimeout(() => {
             toggleTheme()
         }, 3);
