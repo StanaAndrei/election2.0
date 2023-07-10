@@ -41,7 +41,7 @@ export default function DrawerNav() {
                     </DrawerContentScrollView>
                 )
             }}>
-                <Drawer.Screen name="HomeStack" component={HomeStack} />
+                <Drawer.Screen name="Home" component={HomeStack} />
                 <Drawer.Screen name="Notifications" component={NotificationsScreen} />
                 <Drawer.Screen name='ProfileStack' component={ProfileStack} />
             </Drawer.Navigator>
