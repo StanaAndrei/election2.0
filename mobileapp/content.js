@@ -1,3 +1,6 @@
-module.exports = {
-    
+
+const SETTINGS = 'Settings!';
+
+export {
+    SETTINGS
 }
