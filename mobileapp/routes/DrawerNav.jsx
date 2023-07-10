@@ -6,7 +6,7 @@ import HomeStack from './HomeStack';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import ProfileStack from './ProfileStack';
 import { Box, useColorMode, useColorModeValue, Text } from 'native-base';
-import useThemeRepo from '../repositories/theme.repo';
+import useThemeRepo, { getTheme } from '../repositories/theme.repo';
 import { THEME_DARK, THEME_LIGHT } from '../constants'
 
 function NotificationsScreen({ navigation }) {
@@ -26,7 +26,12 @@ export default function DrawerNav() {
     const theme = useThemeRepo(state => state.theme)
 
     const handleToggleTheme = () => {
-        toggleTheme()
+        console.log('====================================');
+        console.log(getTheme());
+        console.log('====================================');
+        setTimeout(() => {
+            toggleTheme()
+        }, 3);
     }
 
     return (
