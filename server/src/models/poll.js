@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'Users',
                 key: 'id'
             }
+        },
+        options: {
+            type:DataTypes.JSON,
+            allowNull: false
         }
     }, {
         sequelize,
