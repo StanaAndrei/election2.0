@@ -11,7 +11,13 @@ const createPool = async (req, res) => {
     res.status(200).send('ok')
 }
 
+const getPoolsOfUser = async (req, res) => {
+    console.log(req.params.id);
+    res.end()
+}
+
 const PoolController = {
-    createPool
+    createPool,
+    getPoolsOfUser
 }
 module.exports = PoolController;
