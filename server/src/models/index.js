@@ -41,6 +41,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.UserModel = require('./user')(sequelize, DataTypes);
-
+db.PoolModel = require('./pool')(sequelize, DataTypes);
 
 module.exports = db;
