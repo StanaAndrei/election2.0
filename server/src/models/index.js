@@ -37,19 +37,10 @@ Object.keys(db).forEach(modelName => {
     }
 });
 
-sequelize.sync()
-    .then(() => {
-        console.log('Models synchronized successfully.');
-        // Start your application or perform additional tasks
-    })
-    .catch((error) => {
-        console.error('Error synchronizing models:', error);
-    });
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.UserModel = require('./user')(sequelize, DataTypes);
-db.PoolModel = require('./pool')(sequelize, DataTypes);
+db.PollModel = require('./poll')(sequelize, DataTypes);
 
 module.exports = db;
