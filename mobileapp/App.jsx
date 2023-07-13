@@ -15,16 +15,12 @@ function App() {
     React.useEffect(() => {
         console.log('OK!');
         //logOut()
-        console.log('====================================');
-        console.log(en);
-        
-        console.log('====================================');
         /*
         setTimeout(() => {
             toggleTheme();///for a start bug
         }, 500);//*/
         LogBox.ignoreLogs([
-            'Non-serializable values were found in the navigation state.',
+            'Non-serializable values were found in the navigation state',
         ]);
     }, [])
 

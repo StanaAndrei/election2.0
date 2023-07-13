@@ -8,6 +8,7 @@ import ProfileStack from './ProfileStack';
 import { Box, useColorMode, useColorModeValue, Text } from 'native-base';
 import useThemeRepo, { getTheme } from '../repositories/theme.repo';
 import { THEME_DARK, THEME_LIGHT } from '../constants'
+import PollStack from './PollStack';
 
 function NotificationsScreen({ navigation }) {
     return (
@@ -44,6 +45,7 @@ export default function DrawerNav() {
                 <Drawer.Screen name="Home" component={HomeStack} />
                 <Drawer.Screen name="Notifications" component={NotificationsScreen} />
                 <Drawer.Screen name='ProfileStack' component={ProfileStack} />
+                <Drawer.Screen name='Poll' component={PollStack} />
             </Drawer.Navigator>
         </NavigationContainer>
     );
