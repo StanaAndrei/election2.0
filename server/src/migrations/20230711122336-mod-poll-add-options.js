@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addColumn('Polls', 'options', {
+    await queryInterface.addColumn('polls', 'options', {
         type: Sequelize.JSON,
         allowNull: false
     });
@@ -11,6 +11,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('Polls', 'options')
+    await queryInterface.removeColumn('polls', 'options')
   }
 };

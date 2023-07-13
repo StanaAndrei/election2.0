@@ -3,33 +3,20 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Poll extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models) {
-            // define association here
-            Poll.belongsTo(models.User, { foreignKey: 'userId' })
-        }
-    }
-    Poll.init({
+    const Poll = sequelize.define('poll', {
         name: DataTypes.STRING,
         userId: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'Users',
+                model: 'User',
                 key: 'id'
-            }
+            }//*/
         },
         options: {
-            type:DataTypes.JSON,
+            type: DataTypes.JSON,
             allowNull: false
         }
-    }, {
-        sequelize,
-        modelName: 'Poll',
-    });
+    })
+
     return Poll;
 };

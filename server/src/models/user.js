@@ -7,18 +7,7 @@ const { GLOBAL_SALT } = require('../settings/salt.setup');
 const { DEFAULT_IMG } = require('../../constants');
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      User.hasMany(models.Poll, { foreignKey: 'userId' })
-    }
-  }
-  User.init({
+  const User = sequelize.define('user', {
     firstName: {
         type: DataTypes.STRING,
         allowNull: false
@@ -58,8 +47,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
   }, {
-    sequelize,
-    modelName: 'User',
     defaultScope: {
         attributes: {
           exclude: ['password']
@@ -72,13 +59,13 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       }
-  });
-  
+  })
+
   User.beforeCreate((user, options) => {
     const hashedPassword = bcrypt.hashSync(user.password, GLOBAL_SALT);
     user.password = hashedPassword;
     user.createdAt = null;
-  })
+  })//*/
 
   return User;
 };

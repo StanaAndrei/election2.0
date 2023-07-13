@@ -28,15 +28,6 @@ const port = process.env.PORT || 3000;
 app.get('/', (req, res) => res.send('HI!'));
 app.listen(port, () => {
     console.log(`Listening on port:${port}!`);
-    sequelize.sync()
-    .then(() => {
-        console.log('Models synchronized successfully.');
-        // Start your application or perform additional tasks
-    })
-    .catch((error) => {
-        console.error('Error synchronizing models:', error);
-    });
-
 })
 
 //sendEmail('stadey33@gmail.com', 'This is the subject!', 'tralalallalalala')
