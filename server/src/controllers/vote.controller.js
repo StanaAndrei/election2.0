@@ -4,7 +4,7 @@ const addVote = (req, res) => {
 }
 
 const getPollVotes = id => {
-
+    
 }
 
 const VoteController = {

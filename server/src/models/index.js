@@ -31,11 +31,7 @@ fs
         db[model.name] = model;
     });
 
-Object.keys(db).forEach(modelName => {
-    if (db[modelName].associate) {
-        db[modelName].associate(db);
-    }
-});
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -43,10 +39,17 @@ db.Sequelize = Sequelize;
 db.UserModel = require('./user')(sequelize, DataTypes);
 db.PollModel = require('./poll')(sequelize, DataTypes);
 
+Object.keys(db).forEach(modelName => {
+    if (db[modelName].associate && modelName.endsWith('Model')) {
+        db[modelName].associate(db);
+    }
+});
+
 db.sequelize.sync({ force: false }).then(() => {
     console.log('yes re-sync done!');
 });
 
+/*
 db.UserModel.hasMany(db.PollModel, {
     as: 'poll'
 })
@@ -55,5 +58,7 @@ db.PollModel.belongsTo(db.UserModel, {
     foreignKey: 'userId',
     as: 'UserModel'
 })//*/
+
+
 
 module.exports = db;

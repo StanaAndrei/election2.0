@@ -18,5 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
+    Poll.associate = db => {
+        Poll.belongsTo(db.UserModel, {
+            foreignKey: 'userId',
+            as: 'UserModel'
+        })
+    };
+
     return Poll;
 };

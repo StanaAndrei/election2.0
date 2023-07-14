@@ -5,6 +5,7 @@ const {
 const bcrypt = require('bcrypt');
 const { GLOBAL_SALT } = require('../settings/salt.setup');
 const { DEFAULT_IMG } = require('../../constants');
+const { UserModel } = require('.');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
@@ -60,6 +61,12 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
   })
+
+  User.associate = db => {
+    User.hasMany(db.PollModel, {
+        as: 'poll'
+    })
+  }
 
   User.beforeCreate((user, options) => {
     const hashedPassword = bcrypt.hashSync(user.password, GLOBAL_SALT);
