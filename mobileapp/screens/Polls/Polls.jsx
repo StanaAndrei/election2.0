@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, View, } from 'react-native';
+import { Button } from "native-base";
 
-
-function Polls(props) {
+function Polls({ navigation }) {
     return (
         <>
-           <Text>polls</Text> 
+            <Button onPress={() => navigation.navigate('CreatePollScreen')}>new poll</Button>
+            <Text>my polls:</Text>
         </>
     );
 }
