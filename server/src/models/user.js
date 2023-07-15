@@ -66,6 +66,9 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(db.PollModel, {
         as: 'poll'
     })
+    User.hasMany(db.VoteModel, {
+        as: 'vote'
+    })
   }
 
   User.beforeCreate((user, options) => {

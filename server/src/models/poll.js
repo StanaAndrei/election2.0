@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'userId',
             as: 'UserModel'
         })
+        Poll.hasMany(db.VoteModel, {
+            as: 'vote'
+        })
     };
 
     return Poll;

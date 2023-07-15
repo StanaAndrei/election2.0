@@ -19,6 +19,10 @@ const getPollsOf = userId => {
     
 }
 
+const getPoll = pollId => {
+    
+}
+
 const PollService = {
     createPoll
 }

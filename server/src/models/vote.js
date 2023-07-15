@@ -29,5 +29,16 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
+    Vote.associate = db => {
+        Vote.belongsTo(db.UserModel, {
+            foreignKey: 'userId',
+            as: "UserModel"
+        })
+        Vote.belongsTo(db.PollModel, {
+            foreignKey: 'pollId',
+            as: 'PollModel'
+        })
+    }
+
     return Vote;
 };

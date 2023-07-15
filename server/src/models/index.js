@@ -38,6 +38,7 @@ db.Sequelize = Sequelize;
 
 db.UserModel = require('./user')(sequelize, DataTypes);
 db.PollModel = require('./poll')(sequelize, DataTypes);
+db.VoteModel = require('./vote')(sequelize, DataTypes);
 
 Object.keys(db).forEach(modelName => {
     if (db[modelName].associate && modelName.endsWith('Model')) {
