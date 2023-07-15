@@ -50,16 +50,4 @@ db.sequelize.sync({ force: false }).then(() => {
     console.log('yes re-sync done!');
 });
 
-/*
-db.UserModel.hasMany(db.PollModel, {
-    as: 'poll'
-})
-
-db.PollModel.belongsTo(db.UserModel, {
-    foreignKey: 'userId',
-    as: 'UserModel'
-})//*/
-
-
-
 module.exports = db;
