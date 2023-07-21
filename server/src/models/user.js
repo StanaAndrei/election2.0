@@ -64,7 +64,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = db => {
     User.hasMany(db.PollModel, {
-        as: 'poll'
+        as: 'polls',
+        foreignKey: 'userId'
     })
     User.hasMany(db.VoteModel, {
         as: 'vote'

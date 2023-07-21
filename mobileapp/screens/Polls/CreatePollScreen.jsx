@@ -2,13 +2,14 @@ import React from 'react';
 import { Formik } from 'formik'
 import { Input, Heading, TextArea, VStack, Center, Button, Box, Text, Checkbox, FormControl, HStack, Pressable, Icon, ScrollView } from 'native-base';
 import { MaterialIcons } from "@expo/vector-icons";
+import PollAPI from '../../api/poll.api';
 
 const INI_NR_INP = 2;
 const INI_ARR = Array.from({
     length: INI_NR_INP
 }, () => '')
 
-function CreatePollScreen({ navigation }) {
+function CreatePollScreen({ navigation, route }) {
 
     const [options, setOptions] = React.useState(INI_ARR)
     const [isPublic, setisPublic] = React.useState(false);
@@ -35,17 +36,23 @@ function CreatePollScreen({ navigation }) {
     return (
         <ScrollView keyboardShouldPersistTaps='handled'>
             <Formik
-                initialValues={{ title: '', desc: '' }}
+                initialValues={{ name: '', desc: '' }}
                 //validationSchema={loginSchema}
                 onSubmit={(values, actions) => {
                     //actions.resetForm();
-                    const poll = {
+                    const pollData = {
                         ...values,
                         options,
                         isPublic
                     }
-                    console.log(poll);
-                    navigation.goBack();
+                    PollAPI.createPoll(pollData).then(res => {
+                        if (res) {
+                            route.params.onGoBack();
+                            navigation.goBack();
+                        } else {
+                            alert('ERROR!')
+                        }
+                    })                    
                 }}
             >
                 {({
@@ -67,8 +74,8 @@ function CreatePollScreen({ navigation }) {
                                 <FormControl>
                                     <FormControl.Label>title ID</FormControl.Label>
                                     <Input
-                                        value={values.title}
-                                        onChangeText={handleChange('title')}
+                                        value={values.name}
+                                        onChangeText={handleChange('name')}
                                     />
                                 </FormControl>
                                 <FormControl>

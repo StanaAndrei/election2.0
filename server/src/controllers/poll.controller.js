@@ -1,7 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 const PoolService = require('../services/poll.service');
-const { UserModel } = require('../models');
+const { UserModel, PollModel } = require('../models');
 const { use } = require('../routes/poll.router');
+const PollService = require('../services/poll.service');
 
 const createPool = async (req, res) => {
     const userId = res.locals.userId;
@@ -17,9 +18,11 @@ const createPool = async (req, res) => {
 }
 
 const getPollsOfUser = async (req, res) => {
-    const user = await UserModel.findOne({ where: { id: `${req.params.id}` }, include: ["poll"] });
-    console.log(user);
-    res.status(200).send(user)
+    const data = await PollService.getPollsOf(req.params.id)
+    if (!data) {
+        return res.send(StatusCodes.BAD_REQUEST).send()
+    }
+    res.status(StatusCodes.OK).send(data)
 }
 
 const PoolController = {
