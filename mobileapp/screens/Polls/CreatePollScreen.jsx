@@ -11,7 +11,7 @@ const INI_ARR = Array.from({
 function CreatePollScreen({ navigation }) {
 
     const [options, setOptions] = React.useState(INI_ARR)
-    const [isPub, setIsPub] = React.useState(false);
+    const [isPublic, setisPublic] = React.useState(false);
 
     const handlePlus = () => {
         setOptions(prev => [...prev, ''])
@@ -35,12 +35,17 @@ function CreatePollScreen({ navigation }) {
     return (
         <ScrollView keyboardShouldPersistTaps='handled'>
             <Formik
-                initialValues={{ title: '', password: '' }}
+                initialValues={{ title: '', desc: '' }}
                 //validationSchema={loginSchema}
                 onSubmit={(values, actions) => {
                     //actions.resetForm();
-                    console.log(options);
-                    console.log(isPub);
+                    const poll = {
+                        ...values,
+                        options,
+                        isPublic
+                    }
+                    console.log(poll);
+                    navigation.goBack();
                 }}
             >
                 {({
@@ -68,7 +73,7 @@ function CreatePollScreen({ navigation }) {
                                 </FormControl>
                                 <FormControl>
                                     <FormControl.Label>Description</FormControl.Label>
-                                    <TextArea h={20} placeholder="Not required" w="75%" maxW="300" />
+                                    <TextArea onChangeText={handleChange('desc')} value={values.desc} h={20} placeholder="Not required" w="75%" maxW="300" />
                                 </FormControl>
                                 {
                                     [...Array(options.length)].map((_, id) => {
@@ -89,9 +94,9 @@ function CreatePollScreen({ navigation }) {
                                     </Button>
                                 </HStack>
                                 <Checkbox
-                                    onChange={() => setIsPub(!isPub)}
+                                    onChange={() => setisPublic(!isPublic)}
                                     shadow={2} colorScheme={'indigo'}
-                                    value={isPub}
+                                    value={isPublic}
                                     >
                                     public?
                                 </Checkbox>

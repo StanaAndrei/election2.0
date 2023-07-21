@@ -4,7 +4,7 @@ const { UserModel } = require('../models');
 const { use } = require('../routes/poll.router');
 
 const createPool = async (req, res) => {
-    const userId = Number(req.params.id);
+    const userId = res.locals.userId;
     console.log(req.body.options);
     console.log(userId);
     const pollId = await PoolService.createPoll({ userId, name: req.body.name, options: req.body.options });

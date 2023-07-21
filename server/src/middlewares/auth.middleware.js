@@ -7,11 +7,11 @@ const checkJwt = (res) => {
 
 const isAuth = (req, res, next) => { 
     if (!res.locals.decodedJwt) {
-        return res.send(StatusCodes.UNAUTHORIZED).send();
+        return res.status(StatusCodes.UNAUTHORIZED).send();
     }
     try {
         const { userId } = res.locals.decodedJwt;
-        if (userId == req.params.id) {
+        if (userId) {
             res.locals.userId = userId;
             next();
         } else {
