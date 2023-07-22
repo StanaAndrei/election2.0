@@ -27,7 +27,6 @@ function Polls({ navigation }) {
         <>
             <Button onPress={() => navigation.navigate('CreatePollScreen', {onGoBack})}>new poll</Button>
             <Text>{data?.firstName}'s polls:</Text>
-            { !data && <Text>Empty</Text> }
             {
                 data?.polls.map((elem, id) => {
                     console.log(elem.name);
