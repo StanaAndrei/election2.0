@@ -6,8 +6,6 @@ const PollService = require('../services/poll.service');
 
 const createPool = async (req, res) => {
     const userId = res.locals.userId;
-    console.log(req.body.options);
-    console.log(userId);
     const pollId = await PoolService.createPoll({ userId, name: req.body.name, options: req.body.options });
     if (!pollId) {
         res.status(StatusCodes.BAD_REQUEST).send();
@@ -25,8 +23,20 @@ const getPollsOfUser = async (req, res) => {
     res.status(StatusCodes.OK).send(data)
 }
 
-const PoolController = {
-    createPool,
-    getPollsOfUser
+const getPollByCode = async (req, res) => {
+
 }
-module.exports = PoolController;
+
+const deletePoll = async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    const ok = await PollService.deletePoll(id);
+    res.status(StatusCodes.ACCEPTED).send(ok)
+}
+
+const PollController = {
+    createPool,
+    getPollsOfUser,
+    deletePoll
+}
+module.exports = PollController;

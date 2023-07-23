@@ -29,12 +29,23 @@ const getPollsOf = async userId => {
     }
 }
 
-const getPoll = pollId => {
+const getPollByCode = async code => {
     
+}
+
+const deletePoll = async pollId => {
+    try {
+        await PollModel.destroy({ where: { id: pollId } });
+        return true;
+    } catch(err) {
+        return false;
+    }
 }
 
 const PollService = {
     createPoll,
-    getPollsOf
+    getPollsOf,
+    getPollByCode,
+    deletePoll,
 }
 module.exports = PollService;
