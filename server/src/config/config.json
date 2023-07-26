@@ -5,7 +5,8 @@
     "database": "elections",
     "host": "192.168.56.101",
     "dialect": "mysql",
-    "port": "3306"
+    "port": "3306",
+    "logging": false
   },
   "test": {
     "username": "root",
