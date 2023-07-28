@@ -1,6 +1,12 @@
 import React from 'react';
 import { Formik } from 'formik'
-import { Input, Heading, TextArea, VStack, Center, Button, Box, Text, Checkbox, FormControl, HStack, Pressable, Icon, ScrollView } from 'native-base';
+import {
+    Input, Heading, DatePicker,
+    TextArea, VStack,
+    Center, Button, Box,
+    Text, Checkbox, FormControl,
+    HStack, Pressable, Icon, ScrollView
+} from 'native-base';
 import { MaterialIcons } from "@expo/vector-icons";
 import PollAPI from '../../api/poll.api';
 
@@ -52,7 +58,7 @@ function CreatePollScreen({ navigation, route }) {
                         } else {
                             alert('ERROR!')
                         }
-                    })                    
+                    })
                 }}
             >
                 {({
@@ -104,7 +110,7 @@ function CreatePollScreen({ navigation, route }) {
                                     onChange={() => setisPublic(!isPublic)}
                                     shadow={2} colorScheme={'indigo'}
                                     value={isPublic}
-                                    >
+                                >
                                     public?
                                 </Checkbox>
                                 <Button onPress={handleSubmit} mt="2" colorScheme="indigo">

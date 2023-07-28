@@ -15,6 +15,15 @@ module.exports = (sequelize, DataTypes) => {
         options: {
             type: DataTypes.JSON,
             allowNull: false
+        },
+        code: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            allowNull: false,
+        },
+        expdate: {
+            type: DataTypes.DATE,
+            allowNull: false
         }
     })
 
@@ -24,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'UserModel'
         })
         Poll.hasMany(db.VoteModel, {
-            as: 'vote'
+            as: 'votes'
         })
     };
 

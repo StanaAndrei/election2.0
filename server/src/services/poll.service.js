@@ -3,11 +3,7 @@ const { error } = require("../schemas/userPatch.schema");
 
 const createPoll = async pollData => {
     try {
-        const poll = await PollModel.create({
-            name: pollData.name,
-            userId: pollData.userId,
-            options: pollData.options
-        })
+        const poll = await PollModel.create(pollData)
         return poll.dataValues.id;
     } catch(err) {
         console.error(err);
@@ -29,10 +25,6 @@ const getPollsOf = async userId => {
     }
 }
 
-const getPollByCode = async code => {
-    
-}
-
 const deletePoll = async pollId => {
     try {
         await PollModel.destroy({ where: { id: pollId } });
@@ -42,10 +34,22 @@ const deletePoll = async pollId => {
     }
 }
 
+const getPollByCodeOrId = async where => {
+    try {
+        const poll = PollModel.findOne(where, {
+            include: ['votes']
+        })
+        return poll;
+    } catch(err) {
+        console.error(err);
+        return null;
+    }
+}
+
 const PollService = {
     createPoll,
     getPollsOf,
-    getPollByCode,
     deletePoll,
+    getPollByCodeOrId
 }
 module.exports = PollService;

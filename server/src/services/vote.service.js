@@ -10,13 +10,7 @@ const addVote = async voteData => {
     }
 }
 
-const getPollVotes = id => {
-
-}
-
-
 const VoteService = {
     addVote,
-    getPollVotes,
 }
 module.exports = VoteService;

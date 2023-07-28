@@ -1,12 +1,11 @@
 const { StatusCodes } = require('http-status-codes');
 const PoolService = require('../services/poll.service');
 const { UserModel, PollModel } = require('../models');
-const { use } = require('../routes/poll.router');
 const PollService = require('../services/poll.service');
 
 const createPool = async (req, res) => {
     const userId = res.locals.userId;
-    const pollId = await PoolService.createPoll({ userId, name: req.body.name, options: req.body.options });
+    const pollId = await PoolService.createPoll({ userId, ...req.body });
     if (!pollId) {
         res.status(StatusCodes.BAD_REQUEST).send();
     } else {
@@ -23,8 +22,23 @@ const getPollsOfUser = async (req, res) => {
     res.status(StatusCodes.OK).send(data)
 }
 
-const getPollByCode = async (req, res) => {
+const getPollByCodeOrId = async (req, res) => {
+    const { id, code } = req.body;
+    let where = undefined;
+    if (id) {
+        where = { id };
+    } else if (code) {
+        where = { code };
+    } else {
+        return res.status(StatusCodes.BAD_REQUEST).send()
+    }
 
+    const poll = await PollService.getPollByCodeOrId(where);
+    if (poll) {
+        res.status(StatusCodes.OK).send(poll)
+    } else {
+        res.status(StatusCodes.BAD_REQUEST).send()
+    }
 }
 
 const deletePoll = async (req, res) => {
@@ -37,6 +51,7 @@ const deletePoll = async (req, res) => {
 const PollController = {
     createPool,
     getPollsOfUser,
-    deletePoll
+    deletePoll,
+    getPollByCodeOrId
 }
 module.exports = PollController;

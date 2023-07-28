@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/', [processJwt, AuthMiddleware.isAuth], PollController.createPool)
 router.get('/of/:id', PollController.getPollsOfUser)
 router.delete('/:id', [processJwt, AuthMiddleware.isAuth], PollController.deletePoll)
+router.get('/data', PollController.getPollByCodeOrId)
 
 module.exports = router;
