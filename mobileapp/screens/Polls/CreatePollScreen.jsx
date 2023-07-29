@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik'
 import {
     Input, Heading, DatePicker,
@@ -9,6 +9,7 @@ import {
 } from 'native-base';
 import { MaterialIcons } from "@expo/vector-icons";
 import PollAPI from '../../api/poll.api';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const INI_NR_INP = 2;
 const INI_ARR = Array.from({
@@ -39,6 +40,15 @@ function CreatePollScreen({ navigation, route }) {
         setOptions(updatedItems);//*/
     }
 
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShowPicker(false);
+        setDate(currentDate);
+    };
+
+    const [showDP, setShowDP] = useState(false);
+    const [expDate, setExpDate] = useState(null);
+
     return (
         <ScrollView keyboardShouldPersistTaps='handled'>
             <Formik
@@ -49,8 +59,11 @@ function CreatePollScreen({ navigation, route }) {
                     const pollData = {
                         ...values,
                         options,
-                        isPublic
+                        isPublic,
+                        expdate: expDate
                     }
+                    //console.log(pollData);
+                
                     PollAPI.createPoll(pollData).then(res => {
                         if (res) {
                             route.params.onGoBack();
@@ -58,7 +71,7 @@ function CreatePollScreen({ navigation, route }) {
                         } else {
                             alert('ERROR!')
                         }
-                    })
+                    })//*/
                 }}
             >
                 {({
@@ -83,6 +96,20 @@ function CreatePollScreen({ navigation, route }) {
                                         value={values.name}
                                         onChangeText={handleChange('name')}
                                     />
+                                </FormControl>
+                                <FormControl>
+                                    {
+                                        showDP && (<DateTimePicker
+                                            value={new Date()}
+                                            onChange={(e, selDate) => {
+                                                //console.log('date: ', selDate);
+                                                setExpDate(selDate);
+                                                setShowDP(false);
+                                            }}
+                                            mode='date'
+                                        />)
+                                    }
+                                    <Button onPress={e => setShowDP(true)}>set expiration date</Button>
                                 </FormControl>
                                 <FormControl>
                                     <FormControl.Label>Description</FormControl.Label>
