@@ -1,4 +1,4 @@
-const { VoteModel } = require("../models");
+const { VoteModel, PollModel } = require("../models");
 
 const addVote = async voteData => {
     try {
@@ -10,7 +10,20 @@ const addVote = async voteData => {
     }
 }
 
+const getPollWithVotes = async id => {
+    try {
+        const poll = await PollModel.findByPk(id, {
+            include: ['votes']
+        })
+        return poll;
+    } catch(err) {
+        console.error(err);
+        return null;
+    }
+}
+
 const VoteService = {
     addVote,
+    getPollWithVotes
 }
 module.exports = VoteService;
