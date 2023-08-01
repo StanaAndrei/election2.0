@@ -15,6 +15,7 @@ function Polls({ navigation }) {
 
     const fetchPolls = () => {
         PollAPI.getPollsOf(jwt_decode(token).userId).then(res => {
+            console.log(res.data);
             setData(res.data);
         })
     }
@@ -22,6 +23,13 @@ function Polls({ navigation }) {
     useEffect(() => {
         isFocused && fetchPolls();
     }, [isFocused])
+
+    const handlePollPress = (id) => {
+        console.log(id);
+        navigation.navigate('PollViewScreen', {
+            id
+        })
+    }
 
     return (
         <>
@@ -33,8 +41,8 @@ function Polls({ navigation }) {
                         fontSize: "md",
                         fontWeight: "bold",
                         color: "white"
-                      }} ref={null} key={id}>
-                          {elem.name}
+                      }} ref={null} key={id} >
+                          <Button onPress={(e) => handlePollPress(elem.id)}>{elem.name.toUpperCase()}</Button>
                         </Box>;
                 })
             }
