@@ -14,7 +14,7 @@ const addVote = async (req, res) => {
 
 const getPollWithVotes = async (req, res) => {
     const { id } = req.params;
-    const poll = await VoteService.getPollWithVotes(id)
+    const poll = await VoteService.getPollWithVotes(id, res.locals.userId)
     res.status(200).send(poll);
 }
 

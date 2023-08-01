@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const SECRETS = require("../../secrets");
 const UserService = require("../services/user.service");
+const { StatusCodes } = require('http-status-codes');
 
 const processJwt = (req, res, next) => {
     const token = req.headers['jwt'];
