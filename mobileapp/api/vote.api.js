@@ -10,8 +10,12 @@ const getPollWithVotes = async id => {
     }
 }
 
+const addVote = async () => {
+    
+}
 
 const VoteAPI = {
-    getPollWithVotes
+    getPollWithVotes,
+    addVote
 }
 export default VoteAPI;

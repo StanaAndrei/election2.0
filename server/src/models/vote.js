@@ -28,7 +28,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {
-        timestamps: false
+        timestamps: false,
+        uniqueKeys: {
+            composite_key: {
+                fields: ['pollId', 'userId'],
+            },
+        }
     })
 
     Vote.associate = db => {

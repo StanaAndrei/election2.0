@@ -1,9 +1,10 @@
 const VoteService = require("../services/vote.service");
 
 const addVote = async (req, res) => {
-    console.log(req.body);
-
-    const vote = await VoteService.addVote(req.body);
+    const vote = await VoteService.addVote({ 
+        ...req.body,
+        userId: res.locals.userId
+    });
     if (vote) {
         res.status(200).send()
     } else {

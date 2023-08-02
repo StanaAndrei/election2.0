@@ -31,6 +31,11 @@ module.exports = {
                 allowNull: false,
             }
         });
+        await queryInterface.addConstraint('votes', {
+            fields: ['userId', 'pollId'],
+            type: 'unique',
+            name: 'composite_unique_key',
+        });
     },
 
     async down(queryInterface, Sequelize) {

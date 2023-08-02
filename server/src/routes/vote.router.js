@@ -4,7 +4,7 @@ const router = express.Router();
 const processJwt = require('../middlewares/jwt.middleware');
 const AuthMiddleware = require("../middlewares/auth.middleware");
 
-router.post('/', VoteController.addVote)
+router.post('/', [processJwt, AuthMiddleware.isAuth], VoteController.addVote)
 router.get('/:id', [processJwt, AuthMiddleware.isAuth], VoteController.getPollWithVotes)
 
 module.exports = router;
