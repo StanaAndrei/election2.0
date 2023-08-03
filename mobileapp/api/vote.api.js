@@ -10,8 +10,14 @@ const getPollWithVotes = async id => {
     }
 }
 
-const addVote = async () => {
-    
+const addVote = async (voteData) => {
+    try {
+        const res = await axiosAuthInst.post('/vote/', voteData)
+        return res;
+    } catch(err) {
+        console.error(err);
+        return null;
+    }
 }
 
 const VoteAPI = {

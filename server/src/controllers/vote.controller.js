@@ -1,4 +1,5 @@
 const VoteService = require("../services/vote.service");
+const { StatusCodes } = require('http-status-codes');
 
 const addVote = async (req, res) => {
     const vote = await VoteService.addVote({ 
@@ -6,9 +7,9 @@ const addVote = async (req, res) => {
         userId: res.locals.userId
     });
     if (vote) {
-        res.status(200).send()
+        res.status(StatusCodes.OK).send()
     } else {
-        res.status(400).send()
+        res.status(StatusCodes.BAD_REQUEST).send()
     }//*/
     res.end();
 }
@@ -16,7 +17,7 @@ const addVote = async (req, res) => {
 const getPollWithVotes = async (req, res) => {
     const { id } = req.params;
     const poll = await VoteService.getPollWithVotes(id, res.locals.userId)
-    res.status(200).send(poll);
+    res.status(StatusCodes.OK).send(poll);
 }
 
 const VoteController = {

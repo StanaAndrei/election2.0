@@ -5,18 +5,11 @@ import RNPoll from "react-native-poll";
 import { View } from 'react-native';
 import VoteAPI from '../../api/vote.api';
 
-/*
-const choices = [
-    { id: 1, choice: "Nike", votes: 12 },
-    { id: 2, choice: "Adidas", votes: 1 },
-    { id: 3, choice: "Puma", votes: 3 },
-    { id: 4, choice: "Reebok", votes: 5 },
-    { id: 5, choice: "Under Armour", votes: 9 },
-];//*/
 function PollView({ navigation, route }) {
     const [choices, setChoices] = React.useState([])
     const [pollData, setPollData] = React.useState(null)
     const [total, setTotal] = React.useState(0);
+    const [ch, setCh] = React.useState(0)
 
     React.useEffect(() => {
         (async function () {
@@ -36,10 +29,24 @@ function PollView({ navigation, route }) {
             setPollData(data);
             setTotal(sum)
         })();
-    }, [])
+    }, [ch])
 
     if (!pollData) {
         return null;
+    }
+
+    const handleVoteSub = (sc) => {
+        console.log(sc);
+        VoteAPI.addVote({
+            pollId: route.params.id,
+            optionNr: sc.id,
+        }).then(res => {
+            if (res) {
+                setCh(ch ^ 1)
+            } else {
+                alert('ERROR');
+            }
+        })
     }
 
     return (
@@ -49,12 +56,10 @@ function PollView({ navigation, route }) {
                 <RNPoll
                     hasBeenVoted={pollData.ivoted}
                     appearFrom="left"
-                    animationDuration={750}
+                    animationDuration={500}
                     totalVotes={total}
                     choices={choices}
-                    onChoicePress={(selectedChoice) =>
-                        console.log("SelectedChoice: ", selectedChoice)
-                    }
+                    onChoicePress={handleVoteSub}
                 />
 
             </View>
